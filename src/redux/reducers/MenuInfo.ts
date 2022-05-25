@@ -1,11 +1,9 @@
-const SET_NAME = 'MenuInfo/SET_MENU';
-
-interface MenuInfoType {
+export interface MenuInfoType {
     menu : String,
-
+    
 }
 
-function MenuInfo(currState : MenuInfoType, action : any ){
+export function MenuInfo(currState : MenuInfoType, action : any ){
     if(currState === undefined){
         return { 
             name : 'default'
@@ -17,10 +15,11 @@ function MenuInfo(currState : MenuInfoType, action : any ){
     }
     return userInfo;
 }
-export default MenuInfo;
 
 export const MenuInfoDispatch = {
     setMenu : function(menu : String){
         return {type : SET_NAME, value : menu};
     }
 }
+
+const SET_NAME = 'MenuInfo/SET_MENU';
