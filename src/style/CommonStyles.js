@@ -6,9 +6,18 @@ export const colorCommonDarkBlue = `
     #2C5364
 `;
 
+export const colorCommonRed = `
+    #e7515d
+`;
+
+export const colorCommonGreen = `
+    #28d475
+`;
+
+
+
 export const cssPageHeader = `
     width : 100%;
-    height : 10%;
     background: ${colorCommonDarkBlue};
     color : white;
 `;

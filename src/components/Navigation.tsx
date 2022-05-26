@@ -1,31 +1,73 @@
 import ButtonCollection from "src/components/ButtonCollection"
-import {useSelector, useDispatch} from 'react-redux'
-import {MenuInfoDispatch} from 'src/redux/reducers/MenuInfo'
-import {rootReducerType} from 'src/redux/RootReducer'
+import {colorCommonGradient} from 'src/style/CommonStyles'
+import {useDispatch} from 'react-redux'
+import {PageInfoDispatch, Pages} from 'src/redux/reducers/PageInfo'
+import { useMemo } from "react";
+import styled from "styled-components";
 
 export default function Navigation(){
-    const menuInfo = useSelector((state : rootReducerType)=>state.MenuInfo);
+    
     const dispath = useDispatch();
-    function onClick(){
-        dispath(MenuInfoDispatch.setMenu('Today'));
+    function goPage(page:string){
+        dispath(PageInfoDispatch.goPage(page));
     }
+    const menuList = useMemo(()=>[
+        {
+            dom : 'Today',
+            action : function(){
+                goPage(Pages.today);
+            },
+            style : {
+                background : 'none',
+                padding : '0px',
+                border : 'none',
+                
+            }
+        },
+        {
+            dom : '+',
+            style : {
+                background : colorCommonGradient,
+                padding : '0px',
+                fontSize : '2.5rem',
+                width : '2.5rem',
+                height : '2.5rem',
+                color : 'white',
+                border : 'none',
+                borderRadius : '100%',
+                display : 'flex',
+                justifyContent : 'center',
+                alignItems : 'center',
+                
+            }
+        },
+        {
+            dom : 'Balance',
+            action : function(){
+                goPage(Pages.balance);
+            },
+            style : {
+                background : 'none',
+                padding : '0px',
+                border : 'none',
+                
+            }
+        },
+    ],[]);
 
     return (
-        <ButtonCollection option={{lineType : "horizon"}} buttons={menuList} />
+        <NavigationWrapper>
+            <ButtonCollection 
+                option={{
+                    lineType : 'horizon',
+                    space : 'around'
+                }} 
+                buttons={menuList} />
+        </NavigationWrapper>
     )
 }
 
-const menuList = [
-    {
-        dom : 'Today',
-        action : function(){
-            console.log('hi');
-        }
-    },
-    {
-        dom : <span>hi</span>,
-        action : function(){
-            console.log('hi');
-        }
-    }
-]
+const NavigationWrapper = styled.div`
+    width: 100%;
+    height: 70%;
+`;

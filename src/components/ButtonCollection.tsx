@@ -1,47 +1,41 @@
-import { ReactElement } from 'react';
-import styled from 'styled-components';
+import React, { ReactElement } from 'react';
+import Collection from 'src/components/Collection'
 
 interface Props {
     option : {
         lineType : 'vertical' | 'horizon'
+        space? : 'around' | 'between' | 'evenly'
     },
     buttons? : Array<Button>
 }
 
 interface Button {
-    dom : String | ReactElement
-    action : Function
+    dom : string | ReactElement,
+    action? : Function,
+    style? : Object,
+    disabled? : boolean
 }
-
-interface StyleProps {
-    lineType? : String
-}
-
 
 export default function ButtonCollection( { option, buttons } : Props){
 
+
     function getButtons(){
         return buttons?.map((button,i)=>{
+            function action(e : React.MouseEvent<HTMLElement>){
+                if(button.action){
+                    button.action();
+                }
+            }
             return (
-                <div key={i}>
+                <button key={i} onClick={action} disabled={button.disabled} style={button.style}>
                     {button.dom}
-                </div>
+                </button>
             )
         });
     }
     
     return (
-        <CollentionWrapper lineType={option.lineType}>
-            {getButtons()}
-        </CollentionWrapper>
+        <Collection option={option} elements={getButtons()} />
+        
     )
 }
-
-const CollentionWrapper = styled.div`
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: ${(props :StyleProps )=> props.lineType === 'vertical' ? 'center' : 'space-around' };
-    align-items: ${(props :StyleProps )=> props.lineType === 'vertical' ? 'space-around' : 'center' };
-    `;

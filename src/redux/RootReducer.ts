@@ -1,9 +1,9 @@
 import { combineReducers} from 'redux';
-import {MenuInfo,MenuInfoType} from 'src/redux/reducers/MenuInfo';
+import {PageInfo,PageInfoType} from 'src/redux/reducers/PageInfo';
 
-export interface rootReducerType {
-    MenuInfo : MenuInfoType,
+export interface RootReducerType {
+    PageInfo : PageInfoType,
 }
-const rootReducer = combineReducers({ MenuInfo });
+const rootReducer = combineReducers({ PageInfo });
 
 export default rootReducer;
