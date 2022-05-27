@@ -1,20 +1,37 @@
 import styled from 'styled-components';
-import {cssPageHeader, colorCommonDarkBlue as ccdb} from 'src/style/CommonStyles';
+import {cssPageHeader} from 'src/style/CommonStyles';
+import {colorCommonDarkBlue as ccdb} from 'src/style/CommonColor';
+import {H5} from 'src/style/CommonTag'
+import { formatCurrency, formatDate } from 'src/utils/FormatUtil';
+import { useMemo, useState } from 'react';
+
 import Navigation from 'src/components/Navigation';
 import HistoryList from 'src/components/HistoryList';
-import { FormatCurrency } from 'src/utils/FormatUtil';
-export default function Today({}){
+
+export default function Today(){
+    const [historyList, setHistoryList] = useState(window.databse.dummyHistoryList);
+    const totalHistory = useMemo(()=>{
+        return sumAmount(historyList);
+    }, [historyList]);
     
+    const [todayList, setTodayList] = useState(window.databse.dummyTodayList);
+    const totalToday = useMemo(()=>{
+        return sumAmount(todayList);
+    }, [todayList]);
+
+
     return (
         <>
             <Header>
-                <H2>2022 05 25</H2>
+                <H2>{formatDate(new Date(),'yyyy mm dd', true)}</H2>
             </Header>
             <Body>
-                <TotalCount title={'예정'} money={612340} sign={'-'} />
-                <HistoryList />
-                <TotalCount title={'오늘'} money={1234005} sign={'-'} />
-                <HistoryList />
+                <H5>예정</H5>
+                <HistoryList today={true} list={historyList} />
+                <H5 align='right'>{totalHistory > 0 ? '' : '-'} &#8361;{formatCurrency(Math.abs(totalHistory))}</H5>
+                <H5>오늘</H5>
+                <HistoryList today={true} list={todayList} />
+                <H5 align='right'>{totalToday > 0 ? '' : '-'} &#8361;{formatCurrency(Math.abs(totalToday))}</H5>
             </Body>
             <Footer>
                 <Navigation/>
@@ -23,32 +40,20 @@ export default function Today({}){
     )
 }
 
-interface TotalCountType{
-    title : string,
-    money : number,
-    sign : string,
-}
-function TotalCount({title, money, sign} : TotalCountType){
-    return (
-        <div style={{
-            width : '100%',
-            display : 'flex',
-            marginTop : '3%'
-        }}>
-            <H5 style={{marginTop : "10px", marginBottom:"5px", paddingLeft:"25px",color:"grey", width:"50%",display:"inline-block"}}>{title}</H5>
-            <H5 style={{marginTop : "10px", marginBottom:"5px", paddingRight:"25px",color:"grey", width:"50%",textAlign:"right", display:"inline-block"}}><>{sign} &#8361;{FormatCurrency(money)}</></H5>
-        </div>
-    )
+function sumAmount(list : Array<HistoryType>){
+    let result = 0;
+    list.forEach(v=>{
+        if(v.type === 'income'){
+            result += v.amount;
+        } else if(v.type === 'expense'){
+            result -= v.amount;
+        }
+    })
+    
+    return result;
 }
 
-const H5 = styled.h5`
-    margin-top : 10px;
-    margin-bottom:5px;
-    padding-left:25px;
-    color:grey;
-    width:50%;
-    display:inline-block;
-`
+// 스타일 interface
 
 const Header = styled.div`
     width : 100%;
@@ -74,3 +79,4 @@ const Footer = styled.div`
     background-color: white;
     border-top : 1px solid ${ccdb};
 `;
+//style

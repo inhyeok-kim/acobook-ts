@@ -1,11 +1,25 @@
 import styled from 'styled-components';
-import {cssPageHeader, colorCommonDarkBlue as ccdb} from 'src/style/CommonStyles';
-import Navigation from 'src/components/Navigation';
-import ButtonCollection from 'src/components/ButtonCollection';
+import {cssPageHeader} from 'src/style/CommonStyles';
+import {colorCommonDarkBlue as ccdb, colorCommonGradient as ccg} from 'src/style/CommonColor';
 import { useMemo, useState } from 'react';
+import {formatCurrency} from 'src/utils/FormatUtil'
+
+import ButtonCollection from 'src/components/ButtonCollection';
+import Navigation from 'src/components/Navigation';
+import BalanceList from 'src/components/BalanceList';
 
 export default function Balance({}){
     const [update,setUpdate] = useState(false);
+
+    const [assetList, setAssetList] = useState(window.databse.dummyAssetList);
+    const totalAsset = useMemo(()=>{
+        return assetList.reduce((p:number,c:AccountType)=>p + c.amount,0);
+    }, assetList);
+    
+    const [debtList, setDebtList] = useState(window.databse.dummyDebtList);
+    const totalDebt = useMemo(()=>{
+        return debtList.reduce((p:number,c:AccountType)=>p + c.amount,0);
+    }, debtList);
 
     const HeaderBtns = useMemo(()=>[
         {
@@ -16,6 +30,7 @@ export default function Balance({}){
                 background : 'none',
                 border : 'none',
                 color : 'white',
+                fontSize : '0.9rem',
             }
         },
         {
@@ -38,6 +53,7 @@ export default function Balance({}){
                 background : 'none',
                 border : 'none',
                 color : 'white',
+                fontSize : '0.9rem',
             }
         }
     ],[update]);
@@ -55,6 +71,20 @@ export default function Balance({}){
                 </HeaderButtons>
             </Header>
             <Body>
+                <div>
+                    <TitleWrapper>
+                        <span>지불계정</span>
+                        <span>&#8361;{formatCurrency(totalAsset)}</span>
+                    </TitleWrapper>
+                    <BalanceList list={assetList} modify={false} />
+                </div>
+                <div>
+                    <TitleWrapper>
+                        <span>신용카드</span>
+                        <span>&#8361;{formatCurrency(totalDebt)}</span>
+                    </TitleWrapper>
+                    <BalanceList list={debtList} modify={false} type='debt' />
+                </div>
             </Body>
             <Footer>
                 <Navigation/>
@@ -62,6 +92,20 @@ export default function Balance({}){
         </>
     )
 }
+
+// 스타일
+const TitleWrapper = styled.div`
+    background-color: ${ccdb};
+    color : white;
+    height : 4%;
+    padding: 0px 5%;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0px;
+`
 
 const Header = styled.div`
     ${cssPageHeader}

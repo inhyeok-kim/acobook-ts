@@ -5,6 +5,9 @@ import App from './App';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import rootReducer from 'src/redux/RootReducer';
+import data from 'src/datas/data';
+
+window.databse = data;
 
 const store = createStore(rootReducer);
 

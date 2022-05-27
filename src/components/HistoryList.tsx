@@ -1,56 +1,58 @@
 import styled from "styled-components";
-import {colorCommonRed as ccr, colorCommonGreen as ccg}from 'src/style/CommonStyles'
+import {cssCommonLi, cssCommonUl}from 'src/style/CommonStyles'
+import {colorCommonRed as ccr, colorCommonGreen as ccg, colorCommonDarkBlue as ccdb}from 'src/style/CommonColor'
 
-export default function HistoryList(){
+import {formatCurrency, formatDate} from 'src/utils/FormatUtil';
+
+interface propsType {
+    list : Array<HistoryType>
+    today? : boolean
+}
+
+export default function HistoryList( {
+    list,
+    today
+} : propsType){
     return (
         <ListWrapper>
-            <List >
-                <div>
-                    <Category>식비</Category>
-                    <Date>4월18</Date>
-                </div>
-                <div>
-                    <Money as={Income}>&#8361;5,000</Money>
-                </div>
-            </List>
-            <List >
-                <div>
-                    <Category>교통비</Category>
-                    <Date>4월18</Date>
-                </div>
-                <div>
-                    <Money as={Expense}>&#8361;50,000</Money>
-                </div>
-            </List>
+            {list.map((v,i)=>{
+                return (
+                    <List key={i}>
+                        <div>
+                            <Category>{v.catogoryNm}</Category>
+                            <Date>{formatDate(v.date, today ? 'HH:MM' : 'mm월 dd일')}</Date>
+                        </div>
+                        <div>
+                                <Money 
+                                    as={v.type === 'income' ? Income : v.type === 'expense' ? Expense : Transfer}
+                                >
+                                    &#8361;{formatCurrency(v.amount)}
+                                </Money>
+                        </div>
+                    </List>
+                )
+            })}
         </ListWrapper>
     )
 }
 
+
+/**
+ * css in js
+ */
 const ListWrapper = styled.ul`
-    list-style: none;
-    padding : 0px;
-    margin: 0px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    ${cssCommonUl}
 `;
 
 const List = styled.li`
-    width: 90%;
-    display: flex;
-    background-color: white;
-    padding: 5px 0px;
-    align-items: center;
-    border-bottom : 1px solid lightgray;
-    &:first-of-type{
-        border-bottom : 1px solid lightgray;
-        border-top : 1px solid lightgray;
-    }
+    ${cssCommonLi}
+    
     div {
         width: 50%;
         display: flex;
         align-items: center;
         justify-content: end;
+        font-weight: bold;
 
         &:first-of-type{
             align-items: baseline;
@@ -66,7 +68,7 @@ const Category = styled.span`
 `;
 
 const Date = styled.span`
-    font-size:0.9rem;
+    font-size:0.8rem;
 `;
 
 const Money = styled.span`
@@ -76,7 +78,7 @@ const Money = styled.span`
     border-radius: 5px;
     font-size: 0.9rem;
     padding-top: 7px;
-    font-weight: normal;
+    font-weight: bold;
 `;
 
 const Expense = styled.span`
@@ -85,4 +87,11 @@ const Expense = styled.span`
 
 const Income = styled.span`
     background-color: ${ccg};
+`; 
+
+const Transfer = styled.span`
+    background-color: ${ccdb};
 `;   
+/**
+ * css in js
+ */
