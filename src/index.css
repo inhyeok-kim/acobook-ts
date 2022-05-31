@@ -44,3 +44,9 @@ i.plus::after{
   top: 15%;
   left: 45%;
 }
+
+div[contenteditable=true]:empty:before{
+  content: attr(placeholder);
+  display: block;
+  color: gray;
+}

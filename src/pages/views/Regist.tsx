@@ -70,6 +70,29 @@ export default function Regist({action} : PropType){
                         buttons={HeaderBtns} />
                 </HeaderButtons>
             </Header>
+            <Body>
+                <SelectAccount>
+                    계정
+                </SelectAccount>        
+                <Category>
+                    <SelectCategory>
+                        항목
+                    </SelectCategory>
+                    <InputAmount contentEditable="false">
+                        0
+                    </InputAmount>
+                </Category>        
+                <RegistDate>
+                    <SelectDate>
+                        2022.05.06 12:33
+                    </SelectDate>
+                    <CheckComplete>
+                        완료&nbsp;
+                        <Check type={"checkbox"} />
+                    </CheckComplete>
+                </RegistDate>        
+                <Memo contentEditable placeholder="#메모"></Memo>        
+            </Body>
         </>
     )
 
@@ -91,13 +114,105 @@ const HeaderButtons = styled.div`
 
 const Body = styled.div`
     width: 100%;
-    height: 84%;
+    height: 94%;
+    padding : 0px 7%;
     background : white;
     overflow: auto;
+    box-sizing: border-box;
+
+    & > div {
+        border-bottom: 1px solid black;
+        height: 6%;
+        font-size: 1rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+    }
 `;
-const Footer = styled.div`
+
+const SelectAccount = styled.div`
     width: 100%;
-    height: 10%;
-    background-color: white;
-    border-top : 1px solid ${colorCommonDarkBlue};
-`;
+    position: relative;
+
+    &::after{
+        content: '';
+        position: absolute;
+        right: 1%;
+        height: 0.5rem;
+        width: 0.5rem;
+        margin-top: 0.4rem;
+        border-top: 2px solid ${colorCommonDarkBlue};
+        border-right: 2px solid ${colorCommonDarkBlue};
+        transform: rotateZ(45deg);
+    }
+`
+
+const Category = styled.div`
+    width: 100%;
+    position: relative;
+    display: flex;
+
+`
+const SelectCategory = styled.div`
+    width: 50%;
+    position: relative;
+`
+
+const InputAmount = styled.div`
+    width: 50%;
+    text-align: right;
+    outline: 0px solid transparent;
+`
+const Memo = styled.div`
+    width: 100%;
+    border-bottom: 0px !important;
+    font-weight: normal !important;
+    outline: 0px solid transparent;
+    
+`
+const RegistDate = styled.div`
+    width: 100%;
+    display: flex;
+`
+const SelectDate = styled.div`
+    width: 60%;
+`
+const CheckComplete = styled.div`
+    display: flex;
+    width: 40%;
+    align-items: center;
+    justify-content: end;
+`
+const Check = styled.input`
+    border-radius: 100%;
+    width: 1.7rem;
+    height: 1.7rem;
+    border: 1px solid ${colorCommonDarkBlue};
+    appearance: none;
+    margin: 0px;
+    position: relative;
+
+    &:checked {
+        background-color: ${colorCommonDarkBlue};
+    }
+
+    &:checked::after{
+        position: absolute;
+        content: '';
+        height: 100%;
+        border-right: 2px solid white;
+        bottom: 14%;
+        right: 24%;
+        transform: rotateZ(30deg);
+    }
+    &:checked::before{
+        position: absolute;
+        content: '';
+        height: 50%;
+        border-right: 2px solid white;
+        bottom: 15%;
+        left: 33%;
+        transform: rotateZ(-30deg);
+        border-radius: 30%;
+    }
+`
