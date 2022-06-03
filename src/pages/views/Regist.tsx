@@ -5,6 +5,7 @@ import { cssPageHeader } from "src/style/CommonStyles";
 import styled from "styled-components"
 import {Views, PageInfoDispatch} from 'src/redux/reducers/PageInfo';
 import {useDispatch} from 'react-redux'
+import {ButtonOnOff} from 'inhyeok.kim-module.ui/dist/Buttons'
 
 interface PropType{
     action : actionType
@@ -17,7 +18,6 @@ interface actionType {
 export default function Regist({action} : PropType){
     const [changeMode, setChangeMode] = useState(false);
     const dispatch = useDispatch();
-
     const HeaderBtns = useMemo(()=>[
         {
             dom : <span style={{visibility : changeMode ? 'hidden' : 'visible'}}>취소</span>,
@@ -58,6 +58,8 @@ export default function Regist({action} : PropType){
         }
     ],[changeMode]);
     
+    const [complete, setComplete] = useState(true);
+
     return (
         <>
             <Header>
@@ -87,8 +89,12 @@ export default function Regist({action} : PropType){
                         2022.05.06 12:33
                     </SelectDate>
                     <CheckComplete>
-                        완료&nbsp;
-                        <Check type={"checkbox"} />
+                        {complete ? 
+                            <>완료&nbsp;</>
+                            :
+                            <>예정&nbsp;</>
+                        }
+                        <ButtonOnOff initial={complete} option={{width : "45px",onColor:colorCommonDarkBlue}} onChange={(e :any)=>{setComplete(e)}} />
                     </CheckComplete>
                 </RegistDate>        
                 <Memo contentEditable placeholder="#메모"></Memo>        
@@ -180,6 +186,7 @@ const SelectDate = styled.div`
 const CheckComplete = styled.div`
     display: flex;
     width: 40%;
+    height: 100%;
     align-items: center;
     justify-content: end;
 `
