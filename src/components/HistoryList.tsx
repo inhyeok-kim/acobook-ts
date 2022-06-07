@@ -51,7 +51,7 @@ const List = styled.li`
         width: 50%;
         display: flex;
         align-items: center;
-        justify-content: end;
+        justify-content: flex-end;
         font-weight: bold;
 
         &:first-of-type{

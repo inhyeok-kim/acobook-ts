@@ -1,4 +1,4 @@
-import {useRef, useState } from "react";
+import {useRef } from "react";
 import styled, {keyframes}from "styled-components"
 import {useDispatch} from 'react-redux'
 import {PageInfoDispatch} from 'src/redux/reducers/PageInfo'

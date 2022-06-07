@@ -1,5 +1,6 @@
 import Today from "src/pages/Today";
 import Balance from 'src/pages/Balance';
+import Category from "src/pages/Category";
 import Regist from 'src/pages/views/Regist';
 
 export interface PageInfoType {
@@ -45,10 +46,11 @@ const ADD_VIEW = 'PageInfo/ADD_VIEW';
 const REMOVE_VIEW = 'PageInfo/REMOVE_VIEW';
 
 export const Pages = {
-    today : Today,
-    balance : Balance
+    Today,
+    Balance,
+    Category
 }
 
 export const Views = {
-    Regist : Regist,
+    Regist,
 }

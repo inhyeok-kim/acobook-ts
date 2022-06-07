@@ -188,38 +188,5 @@ const CheckComplete = styled.div`
     width: 40%;
     height: 100%;
     align-items: center;
-    justify-content: end;
-`
-const Check = styled.input`
-    border-radius: 100%;
-    width: 1.7rem;
-    height: 1.7rem;
-    border: 1px solid ${colorCommonDarkBlue};
-    appearance: none;
-    margin: 0px;
-    position: relative;
-
-    &:checked {
-        background-color: ${colorCommonDarkBlue};
-    }
-
-    &:checked::after{
-        position: absolute;
-        content: '';
-        height: 100%;
-        border-right: 2px solid white;
-        bottom: 14%;
-        right: 24%;
-        transform: rotateZ(30deg);
-    }
-    &:checked::before{
-        position: absolute;
-        content: '';
-        height: 50%;
-        border-right: 2px solid white;
-        bottom: 15%;
-        left: 33%;
-        transform: rotateZ(-30deg);
-        border-radius: 30%;
-    }
+    justify-content: flex-end;
 `
