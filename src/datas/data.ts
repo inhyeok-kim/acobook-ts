@@ -22,31 +22,50 @@ export default {
     ],
     dummyHistoryList : [
         {
-            catogoryNm : '카카오 -> 내일채움공제',
+            categoryNm : '카카오 -> 내일채움공제',
             amount : 10000,
             type : 'transfer',
             date : new Date()
         },
         {
-            catogoryNm : '통신비',
+            categoryNm : '통신비',
             amount : 60000,
             type : 'expense',
             date : new Date()
         },
         {
-            catogoryNm : '월급',
+            categoryNm : '월급',
             amount : 2000000,
             type : 'income',
             date : new Date()
         },
-        
     ],
     dummyTodayList : [
         {
-            catogoryNm : '식비',
+            categoryNm : '식비',
             amount : 10000,
             type : 'expense',
             date : new Date()
         }
+    ],
+    dummyCategoryList : [
+        {
+            categoryId : 'cate1',
+            categoryNm : '식비',
+            planAmmount : '100000',
+            current : '35000'
+        },
+        {
+            categoryId : 'cate2',
+            categoryNm : '소비',
+            planAmmount : '200000',
+            current : '72000'
+        },
+        {
+            categoryId : 'cate3',
+            categoryNm : '고정비용',
+            planAmmount : '180000',
+            current : '20000'
+        },
     ]
 }

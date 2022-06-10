@@ -7,19 +7,25 @@ import {formatCurrency} from 'src/utils/FormatUtil'
 import ButtonCollection from 'src/components/ButtonCollection';
 import Navigation from 'src/components/Navigation';
 import BalanceList from 'src/components/BalanceList';
+import { useSelector } from 'react-redux';
+import { RootReducerType } from 'src/redux/RootReducer';
 
 export default function Balance({}){
     const [update,setUpdate] = useState(false);
 
-    const [assetList, setAssetList] = useState(window.databse.dummyAssetList);
-    const totalAsset = useMemo(()=>{
-        return assetList.reduce((p:number,c:AccountType)=>p + c.amount,0);
-    }, assetList);
-    
-    const [debtList, setDebtList] = useState(window.databse.dummyDebtList);
-    const totalDebt = useMemo(()=>{
-        return debtList.reduce((p:number,c:AccountType)=>p + c.amount,0);
-    }, debtList);
+    const accountList = useSelector((state : RootReducerType)=>state.BalanceData);
+
+    const assetList = useMemo(()=>{
+        return accountList.filter((account)=>{
+            return account.type === 'account';
+        })
+    },[accountList]);
+
+    const deptList = useMemo(()=>{
+        return accountList.filter((account)=>{
+            return account.type === 'dept';
+        })
+    },[accountList]);
 
     const HeaderBtns = useMemo(()=>[
         {
@@ -74,16 +80,16 @@ export default function Balance({}){
                 <div>
                     <TitleWrapper>
                         <span>지불계정</span>
-                        <span>&#8361;{formatCurrency(totalAsset)}</span>
+                        <span>&#8361;{formatCurrency(sumTotal(assetList))}</span>
                     </TitleWrapper>
                     <BalanceList list={assetList} modify={false} />
                 </div>
                 <div>
                     <TitleWrapper>
                         <span>신용카드</span>
-                        <span>&#8361;{formatCurrency(totalDebt)}</span>
+                        <span>&#8361;{formatCurrency(sumTotal(deptList))}</span>
                     </TitleWrapper>
-                    <BalanceList list={debtList} modify={false} type='debt' />
+                    <BalanceList list={deptList} modify={false} type='debt' />
                 </div>
             </Body>
             <Footer>
@@ -91,6 +97,10 @@ export default function Balance({}){
             </Footer>
         </>
     )
+}
+
+function sumTotal(list : Array<AccountType>){
+    return list.reduce((p:number,c:AccountType)=>p + c.amount,0);
 }
 
 // 스타일

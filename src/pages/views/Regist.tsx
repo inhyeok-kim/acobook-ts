@@ -3,9 +3,9 @@ import ButtonCollection from "src/components/ButtonCollection";
 import { colorCommonDarkBlue } from "src/style/CommonColor";
 import { cssPageHeader } from "src/style/CommonStyles";
 import styled from "styled-components"
-import {Views, PageInfoDispatch} from 'src/redux/reducers/PageInfo';
 import {useDispatch} from 'react-redux'
 import {ButtonOnOff} from 'inhyeok.kim-module.ui/dist/Buttons'
+import { HistoryDataDispatch } from "src/redux/reducers/HistoryData";
 
 interface PropType{
     action : actionType
@@ -18,7 +18,8 @@ interface actionType {
 export default function Regist({action} : PropType){
     const [changeMode, setChangeMode] = useState(false);
     const dispatch = useDispatch();
-    const HeaderBtns = useMemo(()=>[
+
+    const HeaderBtns = [
         {
             dom : <span style={{visibility : changeMode ? 'hidden' : 'visible'}}>취소</span>,
             action : function(){
@@ -46,7 +47,7 @@ export default function Regist({action} : PropType){
         {
             dom : <span style={{visibility : changeMode ? 'hidden' : 'visible'}}>저장</span>,
             action : function(){
-                dispatch(PageInfoDispatch.addView(Views.Regist));
+                regist();
             },
             style : {
                 background : 'none',
@@ -56,9 +57,28 @@ export default function Regist({action} : PropType){
             },
             disabled : changeMode
         }
-    ],[changeMode]);
+    ];
     
     const [complete, setComplete] = useState(true);
+
+    const [account, setAccount] = useState('');
+    const [category, setCategory] = useState('');
+    const [ammount, setAmmount] = useState(0);
+    const [regDate, setRegDate] = useState('');
+    const [regTime, setRegTime] = useState('');
+
+    function regist(){
+        let newHistory : HistoryType;
+        newHistory = {
+            account : account,
+            categoryNm : category,
+            amount : ammount,
+            date : new Date(),
+            type : "expense",
+        }
+        dispatch(HistoryDataDispatch.ADD_HISTORY(newHistory));
+        action.close();
+    }
 
     return (
         <>
@@ -74,19 +94,18 @@ export default function Regist({action} : PropType){
             </Header>
             <Body>
                 <SelectAccount>
-                    계정
+                    <input type="text" value={account} placeholder="계정" onChange={(e)=>{setAccount(e.target.value)}} />
                 </SelectAccount>        
                 <Category>
                     <SelectCategory>
-                        항목
+                        <input type="text" value={category} placeholder="항목" onChange={(e)=>{setCategory(e.target.value)}} />
                     </SelectCategory>
-                    <InputAmount contentEditable="false">
-                        0
-                    </InputAmount>
+                    <InputAmount type="number" value={ammount}  onChange={(e)=>{setAmmount(parseInt(e.target.value))}}/>
                 </Category>        
                 <RegistDate>
                     <SelectDate>
-                        2022.05.06 12:33
+                        <input type="date" value={regDate} onChange={(e)=>{setRegDate(e.target.value)}} />
+                        <input type="time" value={regTime} onChange={(e)=>{setRegTime(e.target.value)}}/>
                     </SelectDate>
                     <CheckComplete>
                         {complete ? 
@@ -164,7 +183,7 @@ const SelectCategory = styled.div`
     position: relative;
 `
 
-const InputAmount = styled.div`
+const InputAmount = styled.input`
     width: 50%;
     text-align: right;
     outline: 0px solid transparent;

@@ -1,15 +1,18 @@
 /// <reference types="react-scripts" />
 
 interface HistoryType {
-    catogoryNm? : string
-    type? : 'income' | 'expense' | 'transfer'
+    account : string
+    categoryNm : string
+    type : 'income' | 'expense' | 'transfer'
     amount : number,
     date : Date
 }
 
 interface AccountType {
-    accountNm? : string
+    accountId : string
+    accountNm : string
     amount : number
+    type : 'asset' | 'dept' | 'account'
 }
 
 interface Window {

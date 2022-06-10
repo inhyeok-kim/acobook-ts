@@ -7,17 +7,20 @@ import { useMemo, useState } from 'react';
 
 import Navigation from 'src/components/Navigation';
 import HistoryList from 'src/components/HistoryList';
+import { useSelector } from 'react-redux';
+import { RootReducerType } from 'src/redux/RootReducer';
 
 export default function Today(){
-    const [historyList, setHistoryList] = useState(window.databse.dummyHistoryList);
+    const historyList = useSelector((state : RootReducerType)=>state.HistoryData);
+
     const totalHistory = useMemo(()=>{
         return sumAmount(historyList);
     }, [historyList]);
     
-    const [todayList, setTodayList] = useState(window.databse.dummyTodayList);
-    const totalToday = useMemo(()=>{
-        return sumAmount(todayList);
-    }, [todayList]);
+    // const [todayList, setTodayList] = useState(window.databse.dummyTodayList);
+    // const totalToday = useMemo(()=>{
+    //     return sumAmount(todayList);
+    // }, [todayList]);
 
 
     return (
@@ -26,12 +29,12 @@ export default function Today(){
                 <H2>{formatDate(new Date(),'yyyy mm dd', true)}</H2>
             </Header>
             <Body>
-                <H5>예정</H5>
+                {/* <H5>예정</H5>
+                <HistoryList today={true} list={historyList} />
+                <H5 align='right'>{totalHistory > 0 ? '' : '-'} &#8361;{formatCurrency(Math.abs(totalHistory))}</H5> */}
+                <H5>오늘</H5>
                 <HistoryList today={true} list={historyList} />
                 <H5 align='right'>{totalHistory > 0 ? '' : '-'} &#8361;{formatCurrency(Math.abs(totalHistory))}</H5>
-                <H5>오늘</H5>
-                <HistoryList today={true} list={todayList} />
-                <H5 align='right'>{totalToday > 0 ? '' : '-'} &#8361;{formatCurrency(Math.abs(totalToday))}</H5>
             </Body>
             <Footer>
                 <Navigation/>
@@ -49,8 +52,8 @@ function sumAmount(list : Array<HistoryType>){
             result -= v.amount;
         }
     })
-    
     return result;
+    
 }
 
 // 스타일 interface

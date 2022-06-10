@@ -93,7 +93,7 @@ export default function Category(){
                 <div style={{padding:'0px 5%'}}>
                     <div style={{width:'100%',padding:'2.5% 0px',display:'flex', justifyContent:"space-between",borderBottom:'1px solid black'}}>
                         <span>지출</span>
-                        <span>1321321 / 1233123</span>
+                        <span><span>1321321</span> / <span style={{color:'red'}}>1233123</span></span>
                     </div>
                     <div style={{borderBottom:'1px solid black',padding:'2% 0px',display:'flex',justifyContent:'space-between',flexWrap:'wrap'}}>
                         <div style={{boxSizing:'border-box', width:'20%',margin:'2%'}}>

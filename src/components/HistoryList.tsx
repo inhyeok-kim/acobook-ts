@@ -19,7 +19,7 @@ export default function HistoryList( {
                 return (
                     <List key={i}>
                         <div>
-                            <Category>{v.catogoryNm}</Category>
+                            <Category>{v.categoryNm}</Category>
                             <Date>{formatDate(v.date, today ? 'HH:MM' : 'mm월 dd일')}</Date>
                         </div>
                         <div>
