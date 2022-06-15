@@ -1,29 +1,29 @@
-export function BalanceData(currState : Array<AccountType>, action : any ){
+export function BalanceData(currState : Array<BalanceType>, action : any ){
     if(currState === undefined){
-        const def : Array<AccountType> = [
+        const def : Array<BalanceType> = [
             {   
-                accountId : 'acc1',
-                accountNm : '카카오뱅크',
+                balanceId : 'acc1',
+                balanceNm : '카카오뱅크',
                 amount : 10000,
                 type : "account"
             },
             {
-                accountId : 'acc2',
-                accountNm : '급여계좌',
+                balanceId : 'acc2',
+                balanceNm : '급여계좌',
                 amount : 60000,
                 type : "account"
             },
             {
-                accountId : 'acc3',
-                accountNm : '온통대전',
+                balanceId : 'acc3',
+                balanceNm : '온통대전',
                 amount : 2000000,
                 type : "account"
             },
             {
-                accountId : 'acc4',
-                accountNm : '현대카드',
+                balanceId : 'acc4',
+                balanceNm : '현대카드',
                 amount : 10000,
-                type : "dept"
+                type : "debt"
             }
         ]
         return def
@@ -32,14 +32,18 @@ export function BalanceData(currState : Array<AccountType>, action : any ){
     const balanceData = [...currState];
 
     if(action.type === ADD_BALANCE){
+        action.value.balanceId = 'acc'+ seq;
         balanceData.push(action.value);
+        seq++;
     }
 
     return balanceData;
 }
 
-export const HistoryDataDispatch = {
-    ADD_HISTORY : function(balanceData : AccountType){
+let seq = 5;
+
+export const BalanceDataDispatch = {
+    ADD_BALANCE : function(balanceData : BalanceType){
         return {type : ADD_BALANCE, value : balanceData};
     },
 }

@@ -6,7 +6,7 @@ import { BalanceData } from './reducers/BalanceData';
 export interface RootReducerType {
     PageInfo : PageInfoType,
     HistoryData : Array<HistoryType>
-    BalanceData : Array<AccountType>
+    BalanceData : Array<BalanceType>
 }
 const rootReducer = combineReducers({ PageInfo,HistoryData, BalanceData });
 

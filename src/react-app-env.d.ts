@@ -8,11 +8,11 @@ interface HistoryType {
     date : Date
 }
 
-interface AccountType {
-    accountId : string
-    accountNm : string
+interface BalanceType {
+    balanceId : string
+    balanceNm : string
     amount : number
-    type : 'asset' | 'dept' | 'account'
+    type : 'asset' | 'debt' | 'account'
 }
 
 interface Window {

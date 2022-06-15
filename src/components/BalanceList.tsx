@@ -4,7 +4,7 @@ import {colorCommonGreen as green, colorCommonRed as red} from 'src/style/Common
 import { formatCurrency } from "src/utils/FormatUtil";
 
 interface propType {
-    list : Array<AccountType>
+    list : Array<BalanceType>
     modify : boolean,
     type? : 'asset' | 'debt'
 }
@@ -22,7 +22,7 @@ export default function BalanceList({
                     <List key={i}>
                         {modify ? <button><span></span></button> : ''}
                         <div>
-                            <span>{v.accountNm}</span>
+                            <span>{v.balanceNm}</span>
                             <Span as={type === 'asset' ? Asset : Debt}>&#8361; {formatCurrency(v.amount)}</Span>
                         </div>
                     </List>

@@ -7,10 +7,17 @@ import {formatCurrency} from 'src/utils/FormatUtil'
 import ButtonCollection from 'src/components/ButtonCollection';
 import Navigation from 'src/components/Navigation';
 import BalanceList from 'src/components/BalanceList';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootReducerType } from 'src/redux/RootReducer';
+import { PageInfoDispatch } from 'src/redux/reducers/PageInfo';
+import BalanceRegist from './views/BalanceRegist';
 
 export default function Balance({}){
+    const dispatch = useDispatch();
+    function addView(view : Function){
+        dispatch(PageInfoDispatch.addView(view));
+    }
+
     const [update,setUpdate] = useState(false);
 
     const accountList = useSelector((state : RootReducerType)=>state.BalanceData);
@@ -23,7 +30,7 @@ export default function Balance({}){
 
     const deptList = useMemo(()=>{
         return accountList.filter((account)=>{
-            return account.type === 'dept';
+            return account.type === 'debt';
         })
     },[accountList]);
 
@@ -31,6 +38,7 @@ export default function Balance({}){
         {
             dom : <span style={{visibility : update ? 'visible' : 'hidden'}}>추가</span>,
             action : function(){
+                addView(BalanceRegist);
             },
             style : {
                 background : 'none',
@@ -99,8 +107,8 @@ export default function Balance({}){
     )
 }
 
-function sumTotal(list : Array<AccountType>){
-    return list.reduce((p:number,c:AccountType)=>p + c.amount,0);
+function sumTotal(list : Array<BalanceType>){
+    return list.reduce((p:number,c:BalanceType)=>p + c.amount,0);
 }
 
 // 스타일
