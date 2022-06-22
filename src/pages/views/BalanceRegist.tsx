@@ -75,7 +75,7 @@ export default function BalanceRegist({action} : PropType){
         action.close();
     }
 
-    const typeOptions = [
+    const typeOptions = useMemo(()=>([
         {
             name : '계정',
             value : 'account'
@@ -88,12 +88,10 @@ export default function BalanceRegist({action} : PropType){
             name : '자산',
             value : 'asset'
         },
-    ]
+    ]),[]);
     const typeNm = useMemo(()=>{
-        return typeOptions.find((v)=>{
-            if(v.value == type) return true;
-        })?.name;
-    },[type]);
+        return typeOptions.find((v)=> v.value === type ? true : false)?.name;
+    },[type,typeOptions]);
     const selectButtons = useRef<any>();
     function openSelect(){
         if(selectButtons.current){
@@ -194,25 +192,4 @@ const InputAmount = styled.input`
     width: 50%;
     text-align: right;
     outline: 0px solid transparent;
-`
-const Memo = styled.div`
-    width: 100%;
-    border-bottom: 0px !important;
-    font-weight: normal !important;
-    outline: 0px solid transparent;
-    
-`
-const RegistDate = styled.div`
-    width: 100%;
-    display: flex;
-`
-const SelectDate = styled.div`
-    width: 60%;
-`
-const CheckComplete = styled.div`
-    display: flex;
-    width: 40%;
-    height: 100%;
-    align-items: center;
-    justify-content: flex-end;
 `

@@ -1,4 +1,5 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import { colorCommonDarkBlue } from "src/style/CommonColor";
 import styled from "styled-components";
 
 interface propType {
@@ -13,6 +14,7 @@ interface ButtonType {
 
 const SelectButtons = forwardRef(({buttons, onChange} : propType, ref)=>{
     const container = useRef<HTMLDivElement>(null)
+    const background = useRef<HTMLDivElement>(null)
     useImperativeHandle(ref,()=>({
         open
     }));
@@ -20,11 +22,17 @@ const SelectButtons = forwardRef(({buttons, onChange} : propType, ref)=>{
         if(container.current){
             container.current.style.top = `calc(100vh - ${container.current.offsetHeight}px)`;
         }
+        if(background.current){
+            background.current.style.display = "block";
+        }
     }
     
     function close(){
         if(container.current){
             container.current.style.top = `calc(100vh)`;
+        }
+        if(background.current){
+            background.current.style.display = "none";
         }
     }
 
@@ -51,14 +59,19 @@ const SelectButtons = forwardRef(({buttons, onChange} : propType, ref)=>{
     }
 
     useEffect(()=>{
-        document.addEventListener('touchstart',touchOut);
+        if(background.current){
+            background.current.addEventListener('touchstart',touchOut);
+        }
         return ()=>{
-            document.removeEventListener('touchstart',touchOut);
+            if(background.current){
+                background.current.removeEventListener('touchstart',touchOut);
+            }
         }
     },[]);
 
     return (
         <>
+            <Background ref={background}></Background>
             <Container ref={container}>
                 <ButtonContainer>
                     { buttons.length >0 ? 
@@ -89,11 +102,12 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     flex-direction: column;
-    transition: top 0.5s;
+    transition: top 0.3s;
     -webkit-user-select:none;
     -moz-user-select:none;
     -ms-user-select:none;
     user-select:none;
+    z-index: 999;
 `
 
 const ButtonContainer = styled.div`
@@ -116,8 +130,20 @@ const Button = styled.div`
     font-size: 1.2rem;
     font-weight: lighter;
     border-bottom: 1px solid lightgray;
-    padding : 10px 0px;
+    padding : 15px 0px;
     &:last-child{
         border-bottom: none;
     }
+    color : ${colorCommonDarkBlue};
+`
+
+const Background = styled.div`
+    width: 100vw;
+    height : 100vh;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background-color: #00000037;
+    z-index: 998;
+    display: none;
 `

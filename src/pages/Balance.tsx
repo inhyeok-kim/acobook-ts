@@ -90,14 +90,14 @@ export default function Balance({}){
                         <span>지불계정</span>
                         <span>&#8361;{formatCurrency(sumTotal(assetList))}</span>
                     </TitleWrapper>
-                    <BalanceList list={assetList} modify={false} />
+                    <BalanceList list={assetList} modify={update} />
                 </div>
                 <div>
                     <TitleWrapper>
                         <span>신용카드</span>
                         <span>&#8361;{formatCurrency(sumTotal(deptList))}</span>
                     </TitleWrapper>
-                    <BalanceList list={deptList} modify={false} type='debt' />
+                    <BalanceList list={deptList} modify={update} type='debt' />
                 </div>
             </Body>
             <Footer>
@@ -143,7 +143,8 @@ const Body = styled.div`
     width: 100%;
     height: 84%;
     background : white;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: scroll;
 `;
 const Footer = styled.div`
     width: 100%;

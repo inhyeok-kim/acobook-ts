@@ -56,8 +56,8 @@ const ViewWrapper = styled.div`
     background: #aaaaaa;
     position: absolute;
     top: 0px;
-    animation: ${open} 0.5s;
+    animation: ${open} 0.3s;
     &.close {
-        animation: ${close} 0.5s;
+        animation: ${close} 0.3s;
     }
 `
