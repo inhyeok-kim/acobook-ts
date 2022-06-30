@@ -17,7 +17,7 @@ export default function ViewContainer({ view } :PropType){
         }
         setTimeout(()=>{
             dispatch(PageInfoDispatch.removeView());
-        },500);
+        },300);
     }
 
     function renderView(){
