@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import {cssPageHeader} from 'src/style/CommonStyles';
 import {colorCommonDarkBlue as ccdb} from 'src/style/CommonColor';
 import {H5} from 'src/style/CommonTag'
-import { formatCurrency, formatDate } from 'src/utils/FormatUtil';
+import { formatCurrency, formatStringToDate } from 'src/utils/FormatUtil';
 import { useMemo, useState } from 'react';
 
 import Navigation from 'src/components/Navigation';
@@ -26,7 +26,7 @@ export default function Today(){
     return (
         <>
             <Header>
-                <H2>{formatDate(new Date(),'yyyy mm dd', true)}</H2>
+                <H2>{formatStringToDate(new Date(),'yyyy mm dd', true)}</H2>
             </Header>
             <Body>
                 {/* <H5>예정</H5>

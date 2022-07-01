@@ -85,7 +85,7 @@ const SelectButtons = forwardRef(({buttons, onChange} : propType, ref)=>{
                     }
                 </ButtonContainer>
                 <ButtonContainer>
-                    <Button onClick={(e)=>{clickCancel(e)}} onTouchStart={(e)=>{e.stopPropagation();}}>취소</Button>
+                    <Button style={{color:'black'}} onClick={(e)=>{clickCancel(e)}} onTouchStart={(e)=>{e.stopPropagation();}}>취소</Button>
                 </ButtonContainer>
             </Container>
         </>
@@ -128,13 +128,14 @@ const Button = styled.div`
     width: 100%;
     text-align: center;
     font-size: 1.2rem;
-    font-weight: lighter;
+    /* font-weight: bold; */
     border-bottom: 1px solid lightgray;
     padding : 15px 0px;
-    &:last-child{
+    color : ${colorCommonDarkBlue};
+    &:last-of-type{
         border-bottom: none;
     }
-    color : ${colorCommonDarkBlue};
+
 `
 
 const Background = styled.div`

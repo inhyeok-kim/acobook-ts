@@ -12,7 +12,8 @@ interface BalanceType {
     balanceId : string
     balanceNm : string
     amount : number
-    type : 'asset' | 'debt' | 'account'
+    type : 'asset' | 'debt' | 'account' | 'credit_card'
+    registDt? : Date
 }
 
 interface Window {

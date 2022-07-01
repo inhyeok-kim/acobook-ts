@@ -6,6 +6,8 @@ import styled from "styled-components"
 import {useDispatch} from 'react-redux'
 import { BalanceDataDispatch } from "src/redux/reducers/BalanceData";
 import SelectButtons from "src/components/SelectButtons";
+import {formatCurrency, formatStringToDate} from 'src/utils/FormatUtil';
+import InputCurrency from "src/components/InputCurrency";
 
 interface PropType{
     action : actionType
@@ -18,7 +20,7 @@ interface actionType {
 export default function BalanceRegist({action} : PropType){
     const [changeMode, setChangeMode] = useState(false);
     const dispatch = useDispatch();
-
+    
     const HeaderBtns = [
         {
             dom : <span style={{visibility : changeMode ? 'hidden' : 'visible'}}>취소</span>,
@@ -59,16 +61,16 @@ export default function BalanceRegist({action} : PropType){
         }
     ];
     
-    const [type, setType]  : ['account'|'debt'|'asset',Function] = useState('account');
+    const [type, setType]  : ['account'|'credit_card'|'debt'|'asset',Function] = useState('account');
     const [balanceNm, setBalanceNm] = useState('');
-    const [ammount, setAmmount] = useState(0);
+    const [ammount, setAmmount] = useState('0');
 
     function regist(){
         let newBalance : BalanceType;
         newBalance = {
             balanceId : '',
             balanceNm : balanceNm,
-            amount : ammount,
+            amount : parseInt(ammount.replaceAll(',','').replaceAll('₩','')),
             type : type
         }
         dispatch(BalanceDataDispatch.ADD_BALANCE(newBalance));
@@ -77,8 +79,12 @@ export default function BalanceRegist({action} : PropType){
 
     const typeOptions = useMemo(()=>([
         {
-            name : '계정',
+            name : '계좌',
             value : 'account'
+        },
+        {
+            name : '신용카드',
+            value : 'credit_card'
         },
         {
             name : '부채',
@@ -113,15 +119,15 @@ export default function BalanceRegist({action} : PropType){
             </Header>
             <Body>
                 <SelectAccount>
-                    <button onClick={openSelect}>{typeNm}</button>
+                    <AccountSpan onClick={openSelect}>{typeNm}</AccountSpan>
                     <SelectButtons buttons={typeOptions} onChange={(v:string)=>{setType(v)}} ref={selectButtons} />
                 </SelectAccount>        
                 <Category>
-                    <SelectCategory>
-                        <input type="text" value={balanceNm} placeholder="이름" onChange={(e)=>{setBalanceNm(e.target.value)}} />
-                    </SelectCategory>
+                    계정명<InputAccount type="text" value={balanceNm} placeholder="계정명" onChange={(e)=>{setBalanceNm(e.target.value)}} />
                 </Category>        
-                    <InputAmount type="number" value={ammount}  onChange={(e)=>{setAmmount(parseInt(e.target.value))}}/>
+                <Category>
+                    잔액<InputCurrency asCssInJs={InputAmount} init={ammount} onChange={(v:string)=>{setAmmount(v)}}/>
+                </Category>        
             </Body>
         </>
     )
@@ -154,7 +160,7 @@ const Body = styled.div`
         border-bottom: 1px solid black;
         height: 6%;
         font-size: 1rem;
-        font-weight: bold;
+        /* font-weight: bold; */
         display: flex;
         align-items: center;
     }
@@ -181,15 +187,30 @@ const Category = styled.div`
     width: 100%;
     position: relative;
     display: flex;
+    justify-content: space-between;
 
 `
-const SelectCategory = styled.div`
-    width: 50%;
-    position: relative;
-`
-
 const InputAmount = styled.input`
     width: 50%;
     text-align: right;
     outline: 0px solid transparent;
+    border : 0px;
+    font-size: 1rem;
+    `
+
+const InputAccount = styled.input`
+    width: 50%;
+    text-align: right;
+    outline: 0px solid transparent;
+    border : 0px;
+    font-size: 1rem;
+`
+
+const AccountSpan = styled.span`
+    font-weight: bold;
+    color: ${colorCommonDarkBlue};
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
 `

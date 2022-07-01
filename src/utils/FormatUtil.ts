@@ -2,10 +2,10 @@ export function formatCurrency(str : string | number | undefined){
     let param = str;
     if(typeof str === 'string'){
         try {
-            param = Number(param)
+            param = Number(str.replaceAll(',',''));
         } catch (error) {
             console.error('cannot formatable string');
-            return false
+            return '0';
         }
     }
     param = String(param)
@@ -29,8 +29,8 @@ const dateFormatType : 'yyyymmdd' | 'yyyy-mm-dd' | 'yy-mm-dd' | 'yyyymm' | 'yymm
                     | 'HH:MM:SS' | 'HH:MM' | 'MM:SS' | 'HH시 MM분 SS초'
                     = 'yyyy-mm-dd';
 
-export function formatDate(date : Date, format : typeof dateFormatType, fullMark? : boolean){
-    let res : String = format;
+export function formatStringToDate(date : Date, format : typeof dateFormatType, fullMark? : boolean){
+    let res : string = format;
     const year = ''+date.getFullYear();
     const month = ''+(date.getMonth()+1);
     const day = ''+date.getDate();

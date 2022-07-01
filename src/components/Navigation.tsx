@@ -19,33 +19,20 @@ export default function Navigation(){
     }
 
     const menuList = useMemo(()=>[
-        {
-            dom : '오늘',
-            action : function(){
-                goPage(Pages.Today);
-            },
-            style : {
-                background : 'none',
-                padding : '0px',
-                border : 'none',
-                fontSize : '1rem',
-                color : nowPage == Pages.Today ? 'black' : 'grey',
-            }
-        },
-        {
-            dom : '예산',
-            action : function(){
-                goPage(Pages.Category);
-            },
-            style : {
-                background : 'none',
-                padding : '0px',
-                border : 'none',
-                fontSize : '1rem',
-                color : nowPage == Pages.Category ? 'black' : 'grey',
-                
-            }
-        },
+        // {
+        //     dom : '예산',
+        //     action : function(){
+        //         goPage(Pages.Category);
+        //     },
+        //     style : {
+        //         background : 'none',
+        //         padding : '0px',
+        //         border : 'none',
+        //         fontSize : '1rem',
+        //         color : nowPage == Pages.Category ? 'black' : 'grey',
+        
+        //     }
+        // },
         {
             dom : <i className="plus"></i>,
             action: function(){
@@ -63,6 +50,19 @@ export default function Navigation(){
                 justifyContent : 'center',
                 alignItems : 'center',
                 
+            }
+        },
+        {
+            dom : '오늘',
+            action : function(){
+                goPage(Pages.Today);
+            },
+            style : {
+                background : 'none',
+                padding : '0px',
+                border : 'none',
+                fontSize : '1rem',
+                color : nowPage == Pages.Today ? 'black' : 'grey',
             }
         },
         {

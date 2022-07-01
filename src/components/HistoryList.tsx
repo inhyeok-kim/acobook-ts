@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {cssCommonLi, cssCommonUl}from 'src/style/CommonStyles'
 import {colorCommonRed as ccr, colorCommonGreen as ccg, colorCommonDarkBlue as ccdb}from 'src/style/CommonColor'
 
-import {formatCurrency, formatDate} from 'src/utils/FormatUtil';
+import {formatCurrency, formatStringToDate} from 'src/utils/FormatUtil';
 
 interface propsType {
     list : Array<HistoryType>
@@ -20,7 +20,7 @@ export default function HistoryList( {
                     <List key={i}>
                         <div>
                             <Category>{v.categoryNm}</Category>
-                            <Date>{formatDate(v.date, today ? 'HH:MM' : 'mm월 dd일')}</Date>
+                            <Date>{formatStringToDate(v.date, today ? 'HH:MM' : 'mm월 dd일')}</Date>
                         </div>
                         <div>
                                 <Money 

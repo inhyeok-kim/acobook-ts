@@ -6,6 +6,10 @@ import styled from "styled-components"
 import {useDispatch} from 'react-redux'
 import {ButtonOnOff} from 'inhyeok.kim-module.ui/dist/Buttons'
 import { HistoryDataDispatch } from "src/redux/reducers/HistoryData";
+import {formatCurrency, formatStringToDate} from 'src/utils/FormatUtil';
+import InputCurrency from "src/components/InputCurrency";
+import { PageInfoDispatch } from "src/redux/reducers/PageInfo";
+import BalanceSelect from "src/pages/views/BalanceSelect";
 
 interface PropType{
     action : actionType
@@ -19,6 +23,7 @@ export default function Regist({action} : PropType){
     const [changeMode, setChangeMode] = useState(false);
     const dispatch = useDispatch();
 
+    
     const HeaderBtns = [
         {
             dom : <span style={{visibility : changeMode ? 'hidden' : 'visible'}}>취소</span>,
@@ -63,21 +68,25 @@ export default function Regist({action} : PropType){
 
     const [account, setAccount] = useState('');
     const [category, setCategory] = useState('');
-    const [ammount, setAmmount] = useState(0);
-    const [regDate, setRegDate] = useState('');
-    const [regTime, setRegTime] = useState('');
+    const [ammount, setAmmount] = useState('0');
+    const [regDate, setRegDate] = useState(formatStringToDate(new Date(),'yyyy-mm-dd',true));
+    const [regTime, setRegTime] = useState(formatStringToDate(new Date(),'HH:MM',true));
 
     function regist(){
         let newHistory : HistoryType;
         newHistory = {
             account : account,
             categoryNm : category,
-            amount : ammount,
-            date : new Date(),
+            amount : parseInt(ammount.replaceAll(',','').replaceAll('₩','')),
+            date : new Date(`${regDate} ${regTime}`),
             type : "expense",
         }
         dispatch(HistoryDataDispatch.ADD_HISTORY(newHistory));
         action.close();
+    }
+
+    function addView(view : Function){
+        dispatch(PageInfoDispatch.addView(view));
     }
 
     return (
@@ -93,19 +102,19 @@ export default function Regist({action} : PropType){
                 </HeaderButtons>
             </Header>
             <Body>
-                <SelectAccount>
-                    <input type="text" value={account} placeholder="계정" onChange={(e)=>{setAccount(e.target.value)}} />
+                <SelectAccount onClick={()=>{addView(BalanceSelect)}}>
+                    {account}
                 </SelectAccount>        
                 <Category>
-                    <SelectCategory>
-                        <input type="text" value={category} placeholder="항목" onChange={(e)=>{setCategory(e.target.value)}} />
-                    </SelectCategory>
-                    <InputAmount type="number" value={ammount}  onChange={(e)=>{setAmmount(parseInt(e.target.value))}}/>
+                    <InputCategory type="text" value={category} placeholder="내역명" onChange={(e)=>{setCategory(e.target.value)}} />
+                    <div style={{textAlign:"right",width:'60%'}}>
+                        <InputCurrency asCssInJs={InputAmount} init={ammount} onChange={(v:string)=>{setAmmount(v)}}/>
+                    </div>
                 </Category>        
                 <RegistDate>
                     <SelectDate>
-                        <input type="date" value={regDate} onChange={(e)=>{setRegDate(e.target.value)}} />
-                        <input type="time" value={regTime} onChange={(e)=>{setRegTime(e.target.value)}}/>
+                        <InputDate type="date" value={regDate} onChange={(e)=>{setRegDate(e.target.value)}} />
+                        <InputDate type="time" value={regTime} onChange={(e)=>{setRegTime(e.target.value)}}/>
                     </SelectDate>
                     <CheckComplete>
                         {complete ? 
@@ -116,7 +125,7 @@ export default function Regist({action} : PropType){
                         <ButtonOnOff initial={complete} option={{width : "45px",onColor:colorCommonDarkBlue}} onChange={(e :any)=>{setComplete(e)}} />
                     </CheckComplete>
                 </RegistDate>        
-                <Memo contentEditable placeholder="#메모"></Memo>        
+                {/* <Memo contentEditable placeholder="#메모"></Memo>         */}
             </Body>
         </>
     )
@@ -170,23 +179,34 @@ const SelectAccount = styled.div`
         border-right: 2px solid ${colorCommonDarkBlue};
         transform: rotateZ(45deg);
     }
+    & input{
+        border : 0px;
+        font-size: 1rem;
+        width: 40%;
+        outline: 0px solid transparent;
+    }
 `
 
 const Category = styled.div`
     width: 100%;
     position: relative;
     display: flex;
-
+    justify-content: space-between;
 `
-const SelectCategory = styled.div`
-    width: 50%;
-    position: relative;
-`
+const InputCategory = styled.input`
+    border : 0px;
+    font-size: 1rem;
+    width: 40%;
+    outline: 0px solid transparent;
+`;
 
 const InputAmount = styled.input`
-    width: 50%;
+    width: 80%;
+    font-size: 1rem;
     text-align: right;
     outline: 0px solid transparent;
+    border: 0px;
+    border-radius: 0px;
 `
 const Memo = styled.div`
     width: 100%;
@@ -209,3 +229,10 @@ const CheckComplete = styled.div`
     align-items: center;
     justify-content: flex-end;
 `
+
+const InputDate = styled.input`
+    background: none;
+    font-size: 1rem;
+    border : 0px;
+    color : ${colorCommonDarkBlue};
+`;
