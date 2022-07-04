@@ -84,8 +84,8 @@ export default function BalanceSelect({action} : PropType){
         }
     ],[update]);
 
-    function selectAccount(accountNm:string){
-        dispatch(DatabusDispatch.SET_DATA(accountNm));
+    function selectAccount(account:Object){
+        dispatch(DatabusDispatch.SET_DATA(account));
         action.close();
     }
     return (

@@ -71,7 +71,7 @@ export default function BalanceList({
         <ListWrapper>
             {list.map((v,i)=>{
                 return (
-                    <List key={i} onClick={onClick? ()=>{onClick(v.balanceNm)}: ()=>{}} >
+                    <List key={i} onClick={onClick? ()=>{onClick({nm : v.balanceNm, id:v.balanceId})}: ()=>{}} >
                         <div className="list_div">
                             <span>{v.balanceNm}</span>
                             <Span as={type === 'asset' ? Asset : Debt}>&#8361; {formatCurrency(v.amount)}</Span>

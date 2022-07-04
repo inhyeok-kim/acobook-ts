@@ -11,6 +11,8 @@ import InputCurrency from "src/components/InputCurrency";
 import { PageInfoDispatch } from "src/redux/reducers/PageInfo";
 import BalanceSelect from "src/pages/views/BalanceSelect";
 import { RootReducerType } from "src/redux/RootReducer";
+import { useHistoryInsert } from "src/servieces/HistoryService";
+import { DatabusDispatch } from "src/redux/reducers/Databus";
 
 interface PropType{
     action : actionType
@@ -68,13 +70,16 @@ export default function Regist({action} : PropType){
     const selectedAccount = useSelector((state : RootReducerType)=> state.Databus.data);
     useEffect(()=>{
         if(selectedAccount){
-            setAccount(selectedAccount);
+            setAccount(selectedAccount.id);
+            setAccountNm(selectedAccount.nm);
         }
+        dispatch(DatabusDispatch.SET_DATA(null));
     }, [selectedAccount]);
     
     const [complete, setComplete] = useState(true);
 
     const [account, setAccount] = useState('');
+    const [accountNm, setAccountNm] = useState('');
     const [category, setCategory] = useState('');
     const [ammount, setAmmount] = useState('0');
     const [regDate, setRegDate] = useState(formatStringToDate(new Date(),'yyyy-mm-dd',true));
@@ -89,9 +94,10 @@ export default function Regist({action} : PropType){
             date : new Date(`${regDate.replaceAll('-','/')} ${regTime}`),
             type : "expense",
         }
-        dispatch(HistoryDataDispatch.ADD_HISTORY(newHistory));
+        historyInsert(newHistory);
         action.close();
     }
+    const historyInsert = useHistoryInsert();
 
     function addView(view : Function){
         dispatch(PageInfoDispatch.addView(view));
@@ -111,7 +117,7 @@ export default function Regist({action} : PropType){
             </Header>
             <Body>
                 <SelectAccount onClick={()=>{addView(BalanceSelect)}}>
-                    {account}
+                    {accountNm}
                 </SelectAccount>        
                 <Category>
                     <InputCategory type="text" value={category} placeholder="내역명" onChange={(e)=>{setCategory(e.target.value)}} />
