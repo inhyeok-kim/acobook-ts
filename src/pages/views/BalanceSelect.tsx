@@ -5,12 +5,12 @@ import { useMemo, useState } from 'react';
 import {formatCurrency} from 'src/utils/FormatUtil'
 
 import ButtonCollection from 'src/components/ButtonCollection';
-import Navigation from 'src/components/Navigation';
 import BalanceList from 'src/components/BalanceList';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootReducerType } from 'src/redux/RootReducer';
 import { PageInfoDispatch } from 'src/redux/reducers/PageInfo';
 import BalanceRegist from 'src/pages/views/BalanceRegist';
+import { DatabusDispatch } from 'src/redux/reducers/Databus';
 
 interface PropType{
     action : actionType
@@ -84,6 +84,10 @@ export default function BalanceSelect({action} : PropType){
         }
     ],[update]);
 
+    function selectAccount(accountNm:string){
+        dispatch(DatabusDispatch.SET_DATA(accountNm));
+        action.close();
+    }
     return (
         <>
             <Header>
@@ -102,14 +106,14 @@ export default function BalanceSelect({action} : PropType){
                         <span>지불계정</span>
                         <span>&#8361;{formatCurrency(sumTotal(assetList))}</span>
                     </TitleWrapper>
-                    <BalanceList list={assetList} modify={update} />
+                    <BalanceList onClick={selectAccount} list={assetList} modify={update} />
                 </div>
                 <div>
                     <TitleWrapper>
                         <span>신용카드</span>
                         <span>&#8361;{formatCurrency(sumTotal(deptList))}</span>
                     </TitleWrapper>
-                    <BalanceList list={deptList} modify={update} type='debt' />
+                    <BalanceList onClick={selectAccount} list={deptList} modify={update} type='debt' />
                 </div>
             </Body>
         </>

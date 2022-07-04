@@ -12,12 +12,14 @@ interface propType {
     list : Array<BalanceType>
     modify : boolean,
     type? : 'asset' | 'debt'
+    onClick? : Function
 }
 
 export default function BalanceList({
     list,
     modify,
-    type = 'asset'
+    type = 'asset',
+    onClick = ()=>{}
 } : propType){
 
     const [modalShow, setModalShow] = useState(false);
@@ -69,7 +71,7 @@ export default function BalanceList({
         <ListWrapper>
             {list.map((v,i)=>{
                 return (
-                    <List key={i}>
+                    <List key={i} onClick={onClick? ()=>{onClick(v.balanceNm)}: ()=>{}} >
                         <div className="list_div">
                             <span>{v.balanceNm}</span>
                             <Span as={type === 'asset' ? Asset : Debt}>&#8361; {formatCurrency(v.amount)}</Span>

@@ -19,3 +19,7 @@ interface BalanceType {
 interface Window {
     databse : any
 }
+
+interface DatabusType {
+    data : any
+}

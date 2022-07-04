@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ButtonCollection from "src/components/ButtonCollection";
 import { colorCommonDarkBlue } from "src/style/CommonColor";
 import { cssPageHeader } from "src/style/CommonStyles";
 import styled from "styled-components"
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {ButtonOnOff} from 'inhyeok.kim-module.ui/dist/Buttons'
 import { HistoryDataDispatch } from "src/redux/reducers/HistoryData";
 import {formatCurrency, formatStringToDate} from 'src/utils/FormatUtil';
 import InputCurrency from "src/components/InputCurrency";
 import { PageInfoDispatch } from "src/redux/reducers/PageInfo";
 import BalanceSelect from "src/pages/views/BalanceSelect";
+import { RootReducerType } from "src/redux/RootReducer";
 
 interface PropType{
     action : actionType
@@ -63,6 +64,13 @@ export default function Regist({action} : PropType){
             disabled : changeMode
         }
     ];
+
+    const selectedAccount = useSelector((state : RootReducerType)=> state.Databus.data);
+    useEffect(()=>{
+        if(selectedAccount){
+            setAccount(selectedAccount);
+        }
+    }, [selectedAccount]);
     
     const [complete, setComplete] = useState(true);
 
@@ -78,7 +86,7 @@ export default function Regist({action} : PropType){
             account : account,
             categoryNm : category,
             amount : parseInt(ammount.replaceAll(',','').replaceAll('₩','')),
-            date : new Date(`${regDate} ${regTime}`),
+            date : new Date(`${regDate.replaceAll('-','/')} ${regTime}`),
             type : "expense",
         }
         dispatch(HistoryDataDispatch.ADD_HISTORY(newHistory));

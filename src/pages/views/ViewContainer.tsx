@@ -1,7 +1,8 @@
-import {useRef } from "react";
+import {useMemo, useRef } from "react";
 import styled, {keyframes}from "styled-components"
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {PageInfoDispatch} from 'src/redux/reducers/PageInfo'
+import { RootReducerType } from "src/redux/RootReducer";
 
 interface PropType{
     view : Function
@@ -9,7 +10,11 @@ interface PropType{
 
 export default function ViewContainer({ view } :PropType){
     const dispatch = useDispatch();
-    
+    const viewLen = useSelector((state : RootReducerType)=>state.PageInfo.views.length);
+    const zIndex = useMemo(()=>{
+        return viewLen;
+    },[]);
+
     const wrapper = useRef<HTMLDivElement>(null);
     function closeView(){
         if(wrapper.current){
@@ -26,7 +31,7 @@ export default function ViewContainer({ view } :PropType){
     }
 
     return (
-        <ViewWrapper ref={wrapper}>
+        <ViewWrapper zIndex={zIndex} ref={wrapper}>
             {renderView()}
         </ViewWrapper>
     )
@@ -49,7 +54,9 @@ const close = keyframes`
         left : 100%;
     }
 `
-
+interface ViewWrapperStyle {
+    zIndex : number
+}
 const ViewWrapper = styled.div`
     width: 100%;
     height: 100%;
@@ -57,6 +64,7 @@ const ViewWrapper = styled.div`
     position: absolute;
     top: 0px;
     animation: ${open} 0.3s;
+    z-index: ${(props:ViewWrapperStyle) => props.zIndex ? props.zIndex : ''};
     &.close {
         animation: ${close} 0.3s;
     }
