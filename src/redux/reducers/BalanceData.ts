@@ -23,7 +23,7 @@ export function BalanceData(currState : Array<BalanceType>, action : any ){
                 balanceId : 'acc4',
                 balanceNm : '현대카드',
                 amount : 10000,
-                type : "debt"
+                type : "credit_card"
             }
         ]
         return def

@@ -5,8 +5,7 @@ import { cssPageHeader } from "src/style/CommonStyles";
 import styled from "styled-components"
 import {useDispatch, useSelector} from 'react-redux'
 import {ButtonOnOff} from 'inhyeok.kim-module.ui/dist/Buttons'
-import { HistoryDataDispatch } from "src/redux/reducers/HistoryData";
-import {formatCurrency, formatStringToDate} from 'src/utils/FormatUtil';
+import {formatStringToDate} from 'src/utils/FormatUtil';
 import InputCurrency from "src/components/InputCurrency";
 import { PageInfoDispatch } from "src/redux/reducers/PageInfo";
 import BalanceSelect from "src/pages/views/BalanceSelect";
@@ -115,7 +114,7 @@ export default function Regist({action} : PropType){
                         buttons={HeaderBtns} />
                 </HeaderButtons>
             </Header>
-            <Body>
+            <Body>\file\mErvjeoIeU896Gx55sMf72\Untitled
                 <SelectAccount onClick={()=>{addView(BalanceSelect)}}>
                     {accountNm}
                 </SelectAccount>        

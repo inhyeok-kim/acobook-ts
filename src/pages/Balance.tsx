@@ -20,19 +20,31 @@ export default function Balance({}){
 
     const [update,setUpdate] = useState(false);
 
-    const accountList = useSelector((state : RootReducerType)=>state.BalanceData);
+    const balanceList = useSelector((state : RootReducerType)=>state.BalanceData);
 
-    const assetList = useMemo(()=>{
-        return accountList.filter((account)=>{
+    const accountList = useMemo(()=>{
+        return balanceList.filter((account)=>{
             return account.type === 'account';
         })
-    },[accountList]);
+    },[balanceList]);
 
-    const deptList = useMemo(()=>{
-        return accountList.filter((account)=>{
+    const cardList = useMemo(()=>{
+        return balanceList.filter((account)=>{
+            return account.type === 'credit_card';
+        })
+    },[balanceList]);
+
+    const debtList = useMemo(()=>{
+        return balanceList.filter((account)=>{
             return account.type === 'debt';
         })
-    },[accountList]);
+    },[balanceList]);
+
+    const assetList = useMemo(()=>{
+        return balanceList.filter((account)=>{
+            return account.type === 'asset';
+        })
+    },[balanceList]);
 
     const HeaderBtns = useMemo(()=>[
         {
@@ -85,20 +97,48 @@ export default function Balance({}){
                 </HeaderButtons>
             </Header>
             <Body>
-                <div>
-                    <TitleWrapper>
-                        <span>지불계정</span>
-                        <span>&#8361;{formatCurrency(sumTotal(assetList))}</span>
-                    </TitleWrapper>
-                    <BalanceList list={assetList} modify={update} />
-                </div>
-                <div>
-                    <TitleWrapper>
-                        <span>신용카드</span>
-                        <span>&#8361;{formatCurrency(sumTotal(deptList))}</span>
-                    </TitleWrapper>
-                    <BalanceList list={deptList} modify={update} type='debt' />
-                </div>
+                {accountList ? 
+                    <div>
+                        <TitleWrapper>
+                            <span>지불계정</span>
+                            <span>&#8361;{formatCurrency(sumTotal(accountList))}</span>
+                        </TitleWrapper>
+                        <BalanceList list={accountList} modify={update} />
+                    </div>
+                    :
+                    ''
+                }
+                {cardList ?
+                    <div>
+                        <TitleWrapper>
+                            <span>신용카드</span>
+                            <span>&#8361;{formatCurrency(sumTotal(cardList))}</span>
+                        </TitleWrapper>
+                        <BalanceList list={cardList} modify={update} type='debt' />
+                    </div>
+                    :''
+                }
+                {assetList ? 
+                    <div>
+                        <TitleWrapper>
+                            <span>자산</span>
+                            <span>&#8361;{formatCurrency(sumTotal(assetList))}</span>
+                        </TitleWrapper>
+                        <BalanceList list={assetList} modify={update} />
+                    </div>
+                    :
+                    ''
+                }
+                {debtList ?
+                    <div>
+                        <TitleWrapper>
+                            <span>부채</span>
+                            <span>&#8361;{formatCurrency(sumTotal(debtList))}</span>
+                        </TitleWrapper>
+                        <BalanceList list={debtList} modify={update} type='debt' />
+                    </div>
+                    :''
+                }
             </Body>
             <Footer>
                 <Navigation/>

@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 import { RootReducerType } from 'src/redux/RootReducer';
 
 export default function Today(){
-    const historyList = useSelector((state : RootReducerType)=>state.HistoryData);
+    const historyList = useTodayList()
 
     const totalHistory = useMemo(()=>{
         return sumAmount(historyList);
@@ -29,9 +29,6 @@ export default function Today(){
                 <H2>{formatStringToDate(new Date(),'yyyy mm dd', true)}</H2>
             </Header>
             <Body>
-                {/* <H5>예정</H5>
-                <HistoryList today={true} list={historyList} />
-                <H5 align='right'>{totalHistory > 0 ? '' : '-'} &#8361;{formatCurrency(Math.abs(totalHistory))}</H5> */}
                 <H5>오늘</H5>
                 <HistoryList today={true} list={historyList} />
                 <H5 align='right'>{totalHistory > 0 ? '' : '-'} &#8361;{formatCurrency(Math.abs(totalHistory))}</H5>
@@ -41,6 +38,19 @@ export default function Today(){
             </Footer>
         </>
     )
+}
+
+function useTodayList(){
+    const historyList = useSelector((state : RootReducerType)=>state.HistoryData);
+    const today = new Date();
+    const todayList = historyList.filter((v)=>{
+        let isToday = true;
+        if(today.getFullYear() !== v.date.getFullYear()) isToday = false;
+        if(today.getMonth() !== v.date.getMonth()) isToday = false;
+        if(today.getDate() !== v.date.getDate()) isToday = false;
+        return isToday;
+    });
+    return todayList;
 }
 
 function sumAmount(list : Array<HistoryType>){
