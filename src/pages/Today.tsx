@@ -3,12 +3,13 @@ import {cssPageHeader} from 'src/style/CommonStyles';
 import {colorCommonDarkBlue as ccdb} from 'src/style/CommonColor';
 import {H5} from 'src/style/CommonTag'
 import { formatCurrency, formatStringToDate } from 'src/utils/FormatUtil';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import Navigation from 'src/components/Navigation';
 import HistoryList from 'src/components/HistoryList';
 import { useSelector } from 'react-redux';
 import { RootReducerType } from 'src/redux/RootReducer';
+import { getHistoryList } from 'src/service/HistoryService';
 
 export default function Today(){
     const historyList = useTodayList()
@@ -16,6 +17,13 @@ export default function Today(){
     const totalHistory = useMemo(()=>{
         return sumAmount(historyList);
     }, [historyList]);
+
+    function loadHistoryData(){
+        getHistoryList()
+    }
+    useEffect(()=>{
+        loadHistoryData();
+    },[]);
     
     // const [todayList, setTodayList] = useState(window.databse.dummyTodayList);
     // const totalToday = useMemo(()=>{

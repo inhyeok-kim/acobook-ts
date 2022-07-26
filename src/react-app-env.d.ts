@@ -1,7 +1,8 @@
 /// <reference types="react-scripts" />
 
 interface HistoryType {
-    account : string
+    historyId? : string
+    balanceId : string
     categoryNm : string
     type : 'income' | 'expense' | 'transfer'
     amount : number,
@@ -9,7 +10,7 @@ interface HistoryType {
 }
 
 interface BalanceType {
-    balanceId : string
+    balanceId? : string
     balanceNm : string
     amount : number
     type : 'asset' | 'debt' | 'account' | 'credit_card'
@@ -17,7 +18,16 @@ interface BalanceType {
 }
 
 interface Window {
-    databse : any
+    database : IDBDatabase
+    mozIndexedDB : any
+    webkitIndexedDB : any
+    msIndexedDB : any
+    webkitIDBTransaction : any
+    msIDBTransaction : any
+    webkitIDBKeyRange : any
+    msIDBKeyRange : any
+    transaction : any
+    keyRange : any
 }
 
 interface DatabusType {

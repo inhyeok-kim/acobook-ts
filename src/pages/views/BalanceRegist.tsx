@@ -8,6 +8,8 @@ import { BalanceDataDispatch } from "src/redux/reducers/BalanceData";
 import SelectButtons from "src/components/SelectButtons";
 import {formatCurrency, formatStringToDate} from 'src/utils/FormatUtil';
 import InputCurrency from "src/components/InputCurrency";
+import { registBalance } from "src/service/BalanceService";
+import { DatabusDispatch } from "src/redux/reducers/Databus";
 
 interface PropType{
     action : actionType
@@ -68,12 +70,12 @@ export default function BalanceRegist({action} : PropType){
     function regist(){
         let newBalance : BalanceType;
         newBalance = {
-            balanceId : '',
             balanceNm : balanceNm,
             amount : parseInt(ammount.replaceAll(',','').replaceAll('₩','')),
             type : type
         }
-        dispatch(BalanceDataDispatch.ADD_BALANCE(newBalance));
+        registBalance(newBalance);
+        dispatch(DatabusDispatch.SET_DATA('balanceUpdate'));
         action.close();
     }
 

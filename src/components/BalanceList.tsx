@@ -76,7 +76,7 @@ export default function BalanceList({
                             <span>{v.balanceNm}</span>
                             <Span as={type === 'asset' ? Asset : Debt}>&#8361; {formatCurrency(v.amount)}</Span>
                         </div>
-                        <Button modify={modify} onClick={()=>{onClickDelete(v.balanceNm, v.balanceId)}}>삭제</Button>
+                        <Button modify={modify} onClick={()=>{onClickDelete(v.balanceNm, v.balanceId!)}}>삭제</Button>
                     </List>
                 )
             })}

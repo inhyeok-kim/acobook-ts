@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {cssPageHeader} from 'src/style/CommonStyles';
 import {colorCommonDarkBlue as ccdb, colorCommonGradient as ccg} from 'src/style/CommonColor';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {formatCurrency} from 'src/utils/FormatUtil'
 
 import ButtonCollection from 'src/components/ButtonCollection';
@@ -11,41 +11,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootReducerType } from 'src/redux/RootReducer';
 import { PageInfoDispatch } from 'src/redux/reducers/PageInfo';
 import BalanceRegist from './views/BalanceRegist';
+import { getBalanceList } from 'src/service/BalanceService';
 
 export default function Balance({}){
     const dispatch = useDispatch();
     function addView(view : Function){
         dispatch(PageInfoDispatch.addView(view));
     }
-
     const [update,setUpdate] = useState(false);
-
-    const balanceList = useSelector((state : RootReducerType)=>state.BalanceData);
-
-    const accountList = useMemo(()=>{
-        return balanceList.filter((account)=>{
-            return account.type === 'account';
-        })
-    },[balanceList]);
-
-    const cardList = useMemo(()=>{
-        return balanceList.filter((account)=>{
-            return account.type === 'credit_card';
-        })
-    },[balanceList]);
-
-    const debtList = useMemo(()=>{
-        return balanceList.filter((account)=>{
-            return account.type === 'debt';
-        })
-    },[balanceList]);
-
-    const assetList = useMemo(()=>{
-        return balanceList.filter((account)=>{
-            return account.type === 'asset';
-        })
-    },[balanceList]);
-
     const HeaderBtns = useMemo(()=>[
         {
             dom : <span style={{visibility : update ? 'visible' : 'hidden'}}>추가</span>,
@@ -83,6 +56,48 @@ export default function Balance({}){
             }
         }
     ],[update]);
+
+    function loadBalanceData(){
+        getBalanceList()
+        .then((result)=>{
+            setBalanceList(result as Array<BalanceType>);
+        });
+    }
+    
+    const databus = useSelector((state : RootReducerType)=> state.Databus);
+    useEffect(()=>{
+        loadBalanceData();
+    },[]);
+
+    const [balanceList,setBalanceList] = useState<Array<BalanceType>>([]);
+    useEffect(()=>{
+        loadBalanceData();
+    },[databus]);
+
+    const accountList = useMemo(()=>{
+        return balanceList.filter((account)=>{
+            return account.type === 'account';
+        })
+    },[balanceList]);
+
+    const cardList = useMemo(()=>{
+        return balanceList.filter((account)=>{
+            return account.type === 'credit_card';
+        })
+    },[balanceList]);
+
+    const debtList = useMemo(()=>{
+        return balanceList.filter((account)=>{
+            return account.type === 'debt';
+        })
+    },[balanceList]);
+
+    const assetList = useMemo(()=>{
+        return balanceList.filter((account)=>{
+            return account.type === 'asset';
+        })
+    },[balanceList]);
+
 
     return (
         <>

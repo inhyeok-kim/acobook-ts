@@ -10,7 +10,7 @@ import InputCurrency from "src/components/InputCurrency";
 import { PageInfoDispatch } from "src/redux/reducers/PageInfo";
 import BalanceSelect from "src/pages/views/BalanceSelect";
 import { RootReducerType } from "src/redux/RootReducer";
-import { useHistoryInsert } from "src/servieces/HistoryService";
+import { registHistory } from "src/service/HistoryService";
 import { DatabusDispatch } from "src/redux/reducers/Databus";
 
 interface PropType{
@@ -87,16 +87,15 @@ export default function Regist({action} : PropType){
     function regist(){
         let newHistory : HistoryType;
         newHistory = {
-            account : account,
+            balanceId : account,
             categoryNm : category,
             amount : parseInt(ammount.replaceAll(',','').replaceAll('₩','')),
             date : new Date(`${regDate.replaceAll('-','/')} ${regTime}`),
             type : "expense",
         }
-        historyInsert(newHistory);
+        registHistory(newHistory);
         action.close();
     }
-    const historyInsert = useHistoryInsert();
 
     function addView(view : Function){
         dispatch(PageInfoDispatch.addView(view));
@@ -114,7 +113,7 @@ export default function Regist({action} : PropType){
                         buttons={HeaderBtns} />
                 </HeaderButtons>
             </Header>
-            <Body>\file\mErvjeoIeU896Gx55sMf72\Untitled
+            <Body>
                 <SelectAccount onClick={()=>{addView(BalanceSelect)}}>
                     {accountNm}
                 </SelectAccount>        

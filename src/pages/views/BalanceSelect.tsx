@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {cssPageHeader} from 'src/style/CommonStyles';
 import {colorCommonDarkBlue as ccdb, colorCommonGradient as ccg} from 'src/style/CommonColor';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {formatCurrency} from 'src/utils/FormatUtil'
 
 import ButtonCollection from 'src/components/ButtonCollection';
@@ -11,6 +11,7 @@ import { RootReducerType } from 'src/redux/RootReducer';
 import { PageInfoDispatch } from 'src/redux/reducers/PageInfo';
 import BalanceRegist from 'src/pages/views/BalanceRegist';
 import { DatabusDispatch } from 'src/redux/reducers/Databus';
+import { getBalanceList } from 'src/service/BalanceService';
 
 interface PropType{
     action : actionType
@@ -28,19 +29,46 @@ export default function BalanceSelect({action} : PropType){
 
     const [update,setUpdate] = useState(false);
 
-    const accountList = useSelector((state : RootReducerType)=>state.BalanceData);
+    function loadBalanceData(){
+        getBalanceList()
+        .then((result)=>{
+            setBalanceList(result as Array<BalanceType>);
+        });
+    }
+    
+    const databus = useSelector((state : RootReducerType)=> state.Databus);
+    useEffect(()=>{
+        loadBalanceData();
+    },[]);
 
-    const assetList = useMemo(()=>{
-        return accountList.filter((account)=>{
+    const [balanceList,setBalanceList] = useState<Array<BalanceType>>([]);
+    useEffect(()=>{
+        loadBalanceData();
+    },[databus]);
+
+    const accountList = useMemo(()=>{
+        return balanceList.filter((account)=>{
             return account.type === 'account';
         })
-    },[accountList]);
+    },[balanceList]);
 
-    const deptList = useMemo(()=>{
-        return accountList.filter((account)=>{
+    const cardList = useMemo(()=>{
+        return balanceList.filter((account)=>{
+            return account.type === 'credit_card';
+        })
+    },[balanceList]);
+
+    const debtList = useMemo(()=>{
+        return balanceList.filter((account)=>{
             return account.type === 'debt';
         })
-    },[accountList]);
+    },[balanceList]);
+
+    const assetList = useMemo(()=>{
+        return balanceList.filter((account)=>{
+            return account.type === 'asset';
+        })
+    },[balanceList]);
 
     const HeaderBtns = useMemo(()=>[
         {
@@ -101,20 +129,48 @@ export default function BalanceSelect({action} : PropType){
                 </HeaderButtons>
             </Header>
             <Body>
-                <div>
-                    <TitleWrapper>
-                        <span>지불계정</span>
-                        <span>&#8361;{formatCurrency(sumTotal(assetList))}</span>
-                    </TitleWrapper>
-                    <BalanceList onClick={selectAccount} list={assetList} modify={update} />
-                </div>
-                <div>
-                    <TitleWrapper>
-                        <span>신용카드</span>
-                        <span>&#8361;{formatCurrency(sumTotal(deptList))}</span>
-                    </TitleWrapper>
-                    <BalanceList onClick={selectAccount} list={deptList} modify={update} type='debt' />
-                </div>
+                {accountList ? 
+                    <div>
+                        <TitleWrapper>
+                            <span>지불계정</span>
+                            <span>&#8361;{formatCurrency(sumTotal(accountList))}</span>
+                        </TitleWrapper>
+                        <BalanceList onClick={selectAccount} list={accountList} modify={update} />
+                    </div>
+                    :
+                    ''
+                }
+                {cardList ?
+                    <div>
+                        <TitleWrapper>
+                            <span>신용카드</span>
+                            <span>&#8361;{formatCurrency(sumTotal(cardList))}</span>
+                        </TitleWrapper>
+                        <BalanceList onClick={selectAccount} list={cardList} modify={update} type='debt' />
+                    </div>
+                    :''
+                }
+                {assetList ? 
+                    <div>
+                        <TitleWrapper>
+                            <span>자산</span>
+                            <span>&#8361;{formatCurrency(sumTotal(assetList))}</span>
+                        </TitleWrapper>
+                        <BalanceList onClick={selectAccount} list={assetList} modify={update} />
+                    </div>
+                    :
+                    ''
+                }
+                {debtList ?
+                    <div>
+                        <TitleWrapper>
+                            <span>부채</span>
+                            <span>&#8361;{formatCurrency(sumTotal(debtList))}</span>
+                        </TitleWrapper>
+                        <BalanceList onClick={selectAccount} list={debtList} modify={update} type='debt' />
+                    </div>
+                    :''
+                }
             </Body>
         </>
     )
