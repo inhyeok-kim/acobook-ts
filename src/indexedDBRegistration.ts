@@ -1,6 +1,6 @@
 const DB_INFO = {
     DB_NAME : 'test',
-    DB_VERSION : 3,
+    DB_VERSION : 4,
 }
 
 export function databaseRegister(){

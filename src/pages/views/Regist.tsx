@@ -12,6 +12,7 @@ import BalanceSelect from "src/pages/views/BalanceSelect";
 import { RootReducerType } from "src/redux/RootReducer";
 import { registHistory } from "src/service/HistoryService";
 import { DatabusDispatch } from "src/redux/reducers/Databus";
+import { ReloadDispatch } from "src/redux/reducers/Reload";
 
 interface PropType{
     action : actionType
@@ -93,8 +94,10 @@ export default function Regist({action} : PropType){
             date : new Date(`${regDate.replaceAll('-','/')} ${regTime}`),
             type : "expense",
         }
-        registHistory(newHistory);
-        action.close();
+        registHistory(newHistory).then(()=>{
+            dispatch(ReloadDispatch.RELOAD());
+            action.close();
+        });
     }
 
     function addView(view : Function){

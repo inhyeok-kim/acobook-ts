@@ -4,12 +4,10 @@ import { colorCommonDarkBlue } from "src/style/CommonColor";
 import { cssPageHeader } from "src/style/CommonStyles";
 import styled from "styled-components"
 import {useDispatch} from 'react-redux'
-import { BalanceDataDispatch } from "src/redux/reducers/BalanceData";
 import SelectButtons from "src/components/SelectButtons";
-import {formatCurrency, formatStringToDate} from 'src/utils/FormatUtil';
 import InputCurrency from "src/components/InputCurrency";
 import { registBalance } from "src/service/BalanceService";
-import { DatabusDispatch } from "src/redux/reducers/Databus";
+import { ReloadDispatch } from "src/redux/reducers/Reload";
 
 interface PropType{
     action : actionType
@@ -74,9 +72,10 @@ export default function BalanceRegist({action} : PropType){
             amount : parseInt(ammount.replaceAll(',','').replaceAll('₩','')),
             type : type
         }
-        registBalance(newBalance);
-        dispatch(DatabusDispatch.SET_DATA('balanceUpdate'));
-        action.close();
+        registBalance(newBalance).then(()=>{
+            dispatch(ReloadDispatch.RELOAD());
+            action.close();
+        });
     }
 
     const typeOptions = useMemo(()=>([

@@ -21,14 +21,27 @@ export function selectBalanceList(){
     });
 }
 
-export function insertBalanceList(history : BalanceType){
+export function selectBalanceById(id:string){
+    return new Promise(function(resolve, reject){
+        const store = getObjectStore(TABLE, 'readonly');
+        const req = store.get(id);
+        req.onsuccess = function(e:any){
+            resolve(e.target.result);
+        }
+        req.onerror = function(e){
+            reject(e);
+        }
+    });
+}
+
+export function insertBalanceList(balance : BalanceType){
     return new Promise(function(resolve, reject){
         const store = getObjectStore(TABLE, 'readwrite');
 
         let req;
     
         try {
-            req = store.add(history);
+            req = store.add(balance);
 
             req.onerror = function(){
                 console.error(this.error);
@@ -42,5 +55,36 @@ export function insertBalanceList(history : BalanceType){
             console.error(e);
         }
         
+    });
+}
+
+export function deleteBalance(id:string){
+    return new Promise(function(resolve, reject){
+        const store = getObjectStore(TABLE, 'readwrite');
+
+        const req = store.delete(id);
+        req.onsuccess = function(){
+            resolve(true);
+        }
+        req.onerror = function(){
+            reject(false);
+        }
+
+        
+    });
+}
+
+export function updateBalance(balance : BalanceType){
+    return new Promise(function(resolve, reject){
+        const store = getObjectStore(TABLE, 'readwrite');
+
+        const req = store.put(balance);
+        req.onsuccess = function(){
+            resolve(true);
+        }
+        req.onerror = function(){
+            reject(false);
+        }
+
     });
 }

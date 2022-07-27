@@ -6,6 +6,8 @@ import ModalConfirm from "./ModalConfirm";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { BalanceDataDispatch } from "src/redux/reducers/BalanceData";
+import { removeBalance } from "src/service/BalanceService";
+import { ReloadDispatch } from "src/redux/reducers/Reload";
 
 
 interface propType {
@@ -64,7 +66,9 @@ export default function BalanceList({
 
     const dispatch = useDispatch();
     function deleteBalance(id:string){
-        dispatch(BalanceDataDispatch.DELETE_BALACE(id));
+        removeBalance(id).then(()=>{
+            dispatch(ReloadDispatch.RELOAD());
+        });
     }
 
     return (

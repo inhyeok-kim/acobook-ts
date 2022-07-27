@@ -36,16 +36,13 @@ export default function BalanceSelect({action} : PropType){
         });
     }
     
-    const databus = useSelector((state : RootReducerType)=> state.Databus);
-    useEffect(()=>{
-        loadBalanceData();
-    },[]);
-
+    const reload = useSelector((state : RootReducerType)=> state.Reload);
+    
     const [balanceList,setBalanceList] = useState<Array<BalanceType>>([]);
     useEffect(()=>{
         loadBalanceData();
-    },[databus]);
-
+    },[reload]);
+    
     const accountList = useMemo(()=>{
         return balanceList.filter((account)=>{
             return account.type === 'account';
@@ -55,18 +52,6 @@ export default function BalanceSelect({action} : PropType){
     const cardList = useMemo(()=>{
         return balanceList.filter((account)=>{
             return account.type === 'credit_card';
-        })
-    },[balanceList]);
-
-    const debtList = useMemo(()=>{
-        return balanceList.filter((account)=>{
-            return account.type === 'debt';
-        })
-    },[balanceList]);
-
-    const assetList = useMemo(()=>{
-        return balanceList.filter((account)=>{
-            return account.type === 'asset';
         })
     },[balanceList]);
 
@@ -129,7 +114,7 @@ export default function BalanceSelect({action} : PropType){
                 </HeaderButtons>
             </Header>
             <Body>
-                {accountList ? 
+                {accountList.length > 0 ? 
                     <div>
                         <TitleWrapper>
                             <span>지불계정</span>
@@ -140,34 +125,13 @@ export default function BalanceSelect({action} : PropType){
                     :
                     ''
                 }
-                {cardList ?
+                {cardList.length > 0 ?
                     <div>
                         <TitleWrapper>
                             <span>신용카드</span>
                             <span>&#8361;{formatCurrency(sumTotal(cardList))}</span>
                         </TitleWrapper>
                         <BalanceList onClick={selectAccount} list={cardList} modify={update} type='debt' />
-                    </div>
-                    :''
-                }
-                {assetList ? 
-                    <div>
-                        <TitleWrapper>
-                            <span>자산</span>
-                            <span>&#8361;{formatCurrency(sumTotal(assetList))}</span>
-                        </TitleWrapper>
-                        <BalanceList onClick={selectAccount} list={assetList} modify={update} />
-                    </div>
-                    :
-                    ''
-                }
-                {debtList ?
-                    <div>
-                        <TitleWrapper>
-                            <span>부채</span>
-                            <span>&#8361;{formatCurrency(sumTotal(debtList))}</span>
-                        </TitleWrapper>
-                        <BalanceList onClick={selectAccount} list={debtList} modify={update} type='debt' />
                     </div>
                     :''
                 }

@@ -7,28 +7,26 @@ import { useEffect, useMemo, useState } from 'react';
 
 import Navigation from 'src/components/Navigation';
 import HistoryList from 'src/components/HistoryList';
+import { getTodayHistory } from 'src/service/HistoryService';
 import { useSelector } from 'react-redux';
 import { RootReducerType } from 'src/redux/RootReducer';
-import { getHistoryList } from 'src/service/HistoryService';
 
 export default function Today(){
-    const historyList = useTodayList()
 
-    const totalHistory = useMemo(()=>{
-        return sumAmount(historyList);
-    }, [historyList]);
+    const reload = useSelector((state : RootReducerType)=> state.Reload);
 
-    function loadHistoryData(){
-        getHistoryList()
-    }
+    const [todayHistoryList, setTodayHistoryList] = useState<HistoryType[]>([])
     useEffect(()=>{
         loadHistoryData();
-    },[]);
-    
-    // const [todayList, setTodayList] = useState(window.databse.dummyTodayList);
-    // const totalToday = useMemo(()=>{
-    //     return sumAmount(todayList);
-    // }, [todayList]);
+    },[reload]);
+
+    async function loadHistoryData(){
+        const result = await getTodayHistory();
+        setTodayHistoryList(result as HistoryType[]);
+    }
+    const totalHistory = useMemo(()=>{
+        return sumAmount(todayHistoryList);
+    }, [todayHistoryList]);
 
 
     return (
@@ -38,7 +36,7 @@ export default function Today(){
             </Header>
             <Body>
                 <H5>오늘</H5>
-                <HistoryList today={true} list={historyList} />
+                <HistoryList today={true} list={todayHistoryList} />
                 <H5 align='right'>{totalHistory > 0 ? '' : '-'} &#8361;{formatCurrency(Math.abs(totalHistory))}</H5>
             </Body>
             <Footer>
@@ -46,19 +44,6 @@ export default function Today(){
             </Footer>
         </>
     )
-}
-
-function useTodayList(){
-    const historyList = useSelector((state : RootReducerType)=>state.HistoryData);
-    const today = new Date();
-    const todayList = historyList.filter((v)=>{
-        let isToday = true;
-        if(today.getFullYear() !== v.date.getFullYear()) isToday = false;
-        if(today.getMonth() !== v.date.getMonth()) isToday = false;
-        if(today.getDate() !== v.date.getDate()) isToday = false;
-        return isToday;
-    });
-    return todayList;
 }
 
 function sumAmount(list : Array<HistoryType>){

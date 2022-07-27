@@ -63,16 +63,12 @@ export default function Balance({}){
             setBalanceList(result as Array<BalanceType>);
         });
     }
-    
-    const databus = useSelector((state : RootReducerType)=> state.Databus);
-    useEffect(()=>{
-        loadBalanceData();
-    },[]);
+    const reload = useSelector((state : RootReducerType)=> state.Reload);
 
     const [balanceList,setBalanceList] = useState<Array<BalanceType>>([]);
     useEffect(()=>{
         loadBalanceData();
-    },[databus]);
+    },[reload]);
 
     const accountList = useMemo(()=>{
         return balanceList.filter((account)=>{
@@ -112,7 +108,7 @@ export default function Balance({}){
                 </HeaderButtons>
             </Header>
             <Body>
-                {accountList ? 
+                {accountList.length > 0 ? 
                     <div>
                         <TitleWrapper>
                             <span>지불계정</span>
@@ -123,7 +119,7 @@ export default function Balance({}){
                     :
                     ''
                 }
-                {cardList ?
+                {cardList.length > 0 ?
                     <div>
                         <TitleWrapper>
                             <span>신용카드</span>
@@ -133,7 +129,7 @@ export default function Balance({}){
                     </div>
                     :''
                 }
-                {assetList ? 
+                {assetList.length > 0 ? 
                     <div>
                         <TitleWrapper>
                             <span>자산</span>
@@ -144,7 +140,7 @@ export default function Balance({}){
                     :
                     ''
                 }
-                {debtList ?
+                {debtList.length > 0 ?
                     <div>
                         <TitleWrapper>
                             <span>부채</span>
