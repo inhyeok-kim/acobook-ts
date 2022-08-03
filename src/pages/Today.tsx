@@ -8,11 +8,13 @@ import { useEffect, useMemo, useState } from 'react';
 import Navigation from 'src/components/Navigation';
 import HistoryList from 'src/components/HistoryList';
 import { getTodayHistory } from 'src/service/HistoryService';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootReducerType } from 'src/redux/RootReducer';
+import { PageInfoDispatch } from 'src/redux/reducers/PageInfo';
+import Calendar from './views/Calendar';
 
 export default function Today(){
-
+    const dispatch = useDispatch();
     const reload = useSelector((state : RootReducerType)=> state.Reload);
 
     const [todayHistoryList, setTodayHistoryList] = useState<HistoryType[]>([])
@@ -28,11 +30,14 @@ export default function Today(){
         return sumAmount(todayHistoryList);
     }, [todayHistoryList]);
 
+    function addView(view : Function){
+        dispatch(PageInfoDispatch.addView(view));
+    }
 
     return (
         <>
             <Header>
-                <H2>{formatStringToDate(new Date(),'yyyy mm dd', true)}</H2>
+                <H2 onClick={()=>{addView(Calendar)}}>{formatStringToDate(new Date(),'yyyy mm dd', true)}</H2>
             </Header>
             <Body>
                 <H5>오늘</H5>
