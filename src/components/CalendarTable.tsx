@@ -5,11 +5,15 @@ import styled from "styled-components";
 interface propType{
     calDate : Date
     active? :boolean
+    selectDate : Date
+    setSelectDate : Function
 }
 
 export default function CalendarTable({
     calDate,
-    active = true
+    active = true,
+    selectDate = new Date(),
+    setSelectDate
 } : propType){
 
     function renderCalendar(){
@@ -18,6 +22,7 @@ export default function CalendarTable({
         const lastDateOfMonth = new Date(calDate.getFullYear(),calDate.getMonth()+1,0);
         const minorDate = firstDateOfMonth.getDay();
         const plusDate = 6 - lastDateOfMonth.getDay();
+
 
         const dateList : Date[] = [];
         for(let i=minorDate-1; i >= 0; i--){
@@ -33,8 +38,11 @@ export default function CalendarTable({
         return dateList.map(date=>{
             let className = '';
             if(date.getDate() === today.getDate() && date.getMonth() === today.getMonth()) className += 'today ';
+            if(date.getDate() === selectDate.getDate() && date.getMonth() === selectDate.getMonth()) className += 'select ';
+            if(date.getMonth() !== calDate.getMonth()) className += 'inactive ';
             return (
-                <CalDateTd 
+                <CalDateTd className={className}
+                    onClick={()=>{setSelectDate(date)}}
                     key={date.getMonth()+''+date.getDate()}
                 >{date.getDate()}</CalDateTd>
             )
@@ -82,7 +90,11 @@ const CalDateTd = styled.div`
         border : 1px solid ${colorCommonDarkBlue};
     }
     &.select {
-        background-color: #e3e3e3;
+        background-color: ${colorCommonDarkBlue};
+        color: white !important;
+    }
+    &.inactive{
+        color : grey;
     }
 `
 const CalDayTd = styled.div`

@@ -72,6 +72,9 @@ export default function Regist({action} : PropType){
         if(selectedAccount){
             setAccount(selectedAccount.id);
             setAccountNm(selectedAccount.nm);
+            if(selectedAccount.regDate){
+                setRegDate(formatStringToDate(selectedAccount.regDate,'yyyy-mm-dd',true));
+            }
         }
         dispatch(DatabusDispatch.SET_DATA(null));
     }, [selectedAccount]);
@@ -247,7 +250,7 @@ const CheckComplete = styled.div`
 
 const InputDate = styled.input`
     background: none;
-    font-size: 1rem;
+    font-size: 0.9rem;
     border : 0px;
     color : ${colorCommonDarkBlue};
 `;

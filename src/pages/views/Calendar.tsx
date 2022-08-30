@@ -1,8 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import ButtonCollection from "src/components/ButtonCollection";
+import CalendarList from "src/components/CalendarList";
 import CalendarTable from "src/components/CalendarTable";
+import { DatabusDispatch } from "src/redux/reducers/Databus";
 import { PageInfoDispatch } from "src/redux/reducers/PageInfo";
+import { colorCommonDarkBlue } from "src/style/CommonColor";
 import { cssPageHeader } from "src/style/CommonStyles";
 import styled from "styled-components";
 import Regist from "./Regist";
@@ -26,6 +29,7 @@ export default function Calendar({action} : PropType){
         new Date(new Date().getFullYear(),new Date().getMonth()+1),
         new Date(new Date().getFullYear(),new Date().getMonth()+2)
     ]);
+    const [selectDate, setSelectDate] = useState(new Date());
 
     const HeaderBtns = [
         {
@@ -53,6 +57,9 @@ export default function Calendar({action} : PropType){
         {
             dom : <span>추가</span>,
             action : function(){
+                dispatch(DatabusDispatch.SET_DATA({
+                    regDate : selectDate
+                }));
                 addView(Regist);
             },
             style : {
@@ -68,12 +75,25 @@ export default function Calendar({action} : PropType){
         dispatch(PageInfoDispatch.addView(view));
     }
 
-    function renderCalendar(){
-        return monthList.map((month,i)=>{
-            let isActive = false;
-            if(month.getFullYear() === calDate.getFullYear() && month.getMonth() === calDate.getMonth()) isActive = true
-            return <CalendarTable key={i} active={isActive} calDate={month}/>
-        });
+    // function renderCalendar(){
+    //     return monthList.map((month,i)=>{
+    //         let isActive = false;
+    //         if(month.getFullYear() === calDate.getFullYear() && month.getMonth() === calDate.getMonth()) isActive = true
+    //         return <CalendarTable key={i} active={isActive} calDate={month}/>
+    //     });
+    // }
+
+    function moveMonth(type : 'next'|'prev'){
+        switch (type) {
+            case 'next':
+                setCalDate(new Date(calDate.getFullYear(),calDate.getMonth()+1));
+                break;
+            case 'prev':
+                setCalDate(new Date(calDate.getFullYear(),calDate.getMonth()-1));
+                break;
+            default:
+                break;
+        }
     }
 
 
@@ -92,10 +112,17 @@ export default function Calendar({action} : PropType){
             <Body>
                 <CalSection>
                     <CalSlider ref={CalSliderRef}>
-                        {renderCalendar()}
+                        {/* {renderCalendar()} */}
+                        <CalendarTable selectDate={selectDate} setSelectDate={setSelectDate} active={true} calDate={calDate}/>
                     </CalSlider>
+                    <CalBtnTr>
+                        <CalBtnTd><CalButton onClick={()=>{moveMonth('prev')}}>&lt;</CalButton></CalBtnTd>
+                        <CalBtnTd><CalButton onClick={()=>{moveMonth('next')}}>&gt;</CalButton></CalBtnTd>
+                    </CalBtnTr>
                 </CalSection>
-                
+                <List>
+                    <CalendarList selectDate={selectDate} />
+                </List>
             </Body>
         </>
     )
@@ -133,5 +160,37 @@ const CalSection = styled.div`
 const CalSlider = styled.div`
     display: flex;
     flex-wrap: nowrap;
+    height: 20rem;
     /* transition: transform 0.1s; */
+`
+const CalBtnTr = styled.div`
+    display: flex;
+    width: 100vw;
+`
+const CalBtnTd = styled.div`
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+`
+const CalButton = styled.button`
+    width: 70%;
+    height : 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border : none;
+    line-height: -1;
+    font-size: 2rem;
+    font-weight: bold;
+    background-color: ${colorCommonDarkBlue};
+    color: white;
+    outline: none;
+`
+const List = styled.div`
+    width: 100%;
+    height: calc(100% - 24rem);
+    overflow-y: auto;
+    padding-top: 1rem;
+    box-sizing: border-box;
 `

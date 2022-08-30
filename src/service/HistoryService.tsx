@@ -29,3 +29,17 @@ export async function getTodayHistory(){
     
     return result
 }
+
+export async function getHistoryByDate(date : Date){
+    date.setHours(0);
+    date.setMinutes(0);
+    date.setSeconds(0);
+    date.setMilliseconds(0);
+    const tomorrow = new Date(date);
+    tomorrow.setDate(date.getDate()+1);
+    const keyRange = KeyRange.bound(date, tomorrow, true, false);
+
+    const result = await selectHistoryList(keyRange);
+    
+    return result
+}
