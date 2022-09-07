@@ -186,6 +186,7 @@ const CalButton = styled.button`
     background-color: ${colorCommonDarkBlue};
     color: white;
     outline: none;
+    border-radius: 5px;
 `
 const List = styled.div`
     width: 100%;

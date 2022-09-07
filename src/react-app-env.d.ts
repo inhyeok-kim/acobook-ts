@@ -6,7 +6,8 @@ interface HistoryType {
     categoryNm : string
     type : 'income' | 'expense' | 'transfer'
     amount : number,
-    date : Date
+    date : Date,
+    transferId? : string
 }
 
 interface BalanceType {

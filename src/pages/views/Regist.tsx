@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ButtonCollection from "src/components/ButtonCollection";
 import { colorCommonDarkBlue } from "src/style/CommonColor";
 import { cssPageHeader } from "src/style/CommonStyles";
@@ -13,6 +13,7 @@ import { RootReducerType } from "src/redux/RootReducer";
 import { registHistory } from "src/service/HistoryService";
 import { DatabusDispatch } from "src/redux/reducers/Databus";
 import { ReloadDispatch } from "src/redux/reducers/Reload";
+import SelectButtons from "src/components/SelectButtons";
 
 interface PropType{
     action : actionType
@@ -26,7 +27,36 @@ export default function Regist({action} : PropType){
     const [changeMode, setChangeMode] = useState(false);
     const dispatch = useDispatch();
 
-    
+    const [type, setType] = useState('expense');
+    const typeOptions = useMemo(()=>([
+        {
+            name : '지출',
+            value : 'expense'
+        },
+        {
+            name : '수입',
+            value : 'income'
+        },
+        {
+            name : '송금',
+            value : 'transfer'
+        }
+    ]),[]);
+    const typeNm = useMemo(()=>{
+        return typeOptions.find((v)=> v.value === type ? true : false)?.name;
+    },[type,typeOptions]);
+    const selectButtons = useRef<any>();
+    function openSelect(){
+        if(selectButtons.current){
+            selectButtons.current.open();
+        }
+    }
+    useEffect(()=>{
+        setTransferId('');
+        setTransferNm('계정선택');
+    },[type]);
+
+
     const HeaderBtns = [
         {
             dom : <span style={{visibility : changeMode ? 'hidden' : 'visible'}}>취소</span>,
@@ -42,10 +72,10 @@ export default function Regist({action} : PropType){
             disabled : changeMode
         },
         {
-            dom : <h2>지출</h2>,
-            action : function(){
-                setChangeMode(curr=>!curr);
-            },
+            dom : (<>
+                    <h2 onClick={openSelect}>{typeNm}</h2>
+                    <SelectButtons buttons={typeOptions} onChange={(v:string)=>{setType(v)}} ref={selectButtons} />
+                </>),
             style : {
                 background : 'none',
                 border : 'none',
@@ -67,11 +97,31 @@ export default function Regist({action} : PropType){
         }
     ];
 
+    const [selectType, setSelectType] = useState('account');
+    function selectBalanceView(type:"account"|"transfer"){
+        setSelectType(type);
+        addView(BalanceSelect)
+    }
+
     const selectedAccount = useSelector((state : RootReducerType)=> state.Databus.data);
     useEffect(()=>{
         if(selectedAccount){
-            setAccount(selectedAccount.id);
-            setAccountNm(selectedAccount.nm);
+            if(selectType === 'account'){
+                setAccount(selectedAccount.id);
+                setAccountNm(selectedAccount.nm);
+                if(transferId === selectedAccount.id){
+                    setTransferId('');
+                    setTransferNm('계정선택');
+                }
+            } else if(selectType === 'transfer'){
+                setTransferId(selectedAccount.id);
+                setTransferNm(selectedAccount.nm);
+                if(account === selectedAccount.id){
+                    setAccount('');
+                    setAccountNm('계정선택');
+                }
+            }
+
             if(selectedAccount.regDate){
                 setRegDate(formatStringToDate(selectedAccount.regDate,'yyyy-mm-dd',true));
             }
@@ -82,11 +132,13 @@ export default function Regist({action} : PropType){
     const [complete, setComplete] = useState(true);
 
     const [account, setAccount] = useState('');
-    const [accountNm, setAccountNm] = useState('');
+    const [accountNm, setAccountNm] = useState('계좌선택');
     const [category, setCategory] = useState('');
     const [ammount, setAmmount] = useState('0');
     const [regDate, setRegDate] = useState(formatStringToDate(new Date(),'yyyy-mm-dd',true));
     const [regTime, setRegTime] = useState(formatStringToDate(new Date(),'HH:MM',true));
+    const [transferId, setTransferId] = useState('');
+    const [transferNm, setTransferNm] = useState('계좌선택');
 
     function regist(){
         let newHistory : HistoryType;
@@ -95,7 +147,11 @@ export default function Regist({action} : PropType){
             categoryNm : category,
             amount : parseInt(ammount.replaceAll(',','').replaceAll('₩','')),
             date : new Date(`${regDate.replaceAll('-','/')} ${regTime}`),
-            type : "expense",
+            type : type as "expense" | "income" | "transfer",
+            transferId : transferId,
+        }
+        if(type==='transfer'){
+            newHistory.categoryNm = `${accountNm} -> ${transferNm}`;
         }
         registHistory(newHistory).then(()=>{
             dispatch(ReloadDispatch.RELOAD());
@@ -120,11 +176,18 @@ export default function Regist({action} : PropType){
                 </HeaderButtons>
             </Header>
             <Body>
-                <SelectAccount onClick={()=>{addView(BalanceSelect)}}>
+                <SelectAccount onClick={()=>{selectBalanceView("account")}}>
                     {accountNm}
                 </SelectAccount>        
                 <Category>
-                    <InputCategory type="text" value={category} placeholder="내역명" onChange={(e)=>{setCategory(e.target.value)}} />
+                    {
+                        type === 'transfer' ? 
+                            <SelectTransfer style={{width:'100%',height:'100%'}} onClick={()=>{selectBalanceView("transfer")}}>
+                                {transferNm}
+                            </SelectTransfer>       
+                        :
+                            <InputCategory type="text" value={category} placeholder="내역명" onChange={(e)=>{setCategory(e.target.value)}} />
+                    }
                     <div style={{textAlign:"right",width:'60%'}}>
                         <InputCurrency asCssInJs={InputAmount} init={ammount} onChange={(v:string)=>{setAmmount(v)}}/>
                     </div>
@@ -181,6 +244,13 @@ const Body = styled.div`
         align-items: center;
     }
 `;
+
+const SelectTransfer = styled.div`
+    width: 100%;
+    height : 100%;
+    display: flex;
+    align-items: center;
+`
 
 const SelectAccount = styled.div`
     width: 100%;

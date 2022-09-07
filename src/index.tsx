@@ -5,7 +5,6 @@ import App from './App';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import rootReducer from 'src/redux/RootReducer';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import {databaseRegister} from './indexedDBRegistration';
 
 async function systemInit(){
