@@ -1,10 +1,10 @@
-import ButtonCollection from "src/components/ButtonCollection"
-import {colorCommonGradient} from 'src/style/CommonColor'
+import ButtonCollection from "src/old/components/ButtonCollection"
+import {colorCommonGradient} from 'src/old/style/CommonColor'
 import {useDispatch, useSelector} from 'react-redux'
-import {PageInfoDispatch, Pages, Views} from 'src/redux/reducers/PageInfo'
+import {PageInfoDispatch, Pages, Views} from 'src/old/redux/reducers/PageInfo'
 import { useMemo } from "react";
 import styled from "styled-components";
-import { RootReducerType } from "src/redux/RootReducer";
+import { RootReducerType } from "src/old/redux/RootReducer";
 
 export default function Navigation(){
     const nowPage = useSelector((state : RootReducerType)=>state.PageInfo.page);

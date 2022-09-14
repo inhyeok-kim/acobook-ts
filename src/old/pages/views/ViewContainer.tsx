@@ -1,8 +1,8 @@
 import {useMemo, useRef } from "react";
 import styled, {keyframes}from "styled-components"
 import {useDispatch, useSelector} from 'react-redux'
-import {PageInfoDispatch} from 'src/redux/reducers/PageInfo'
-import { RootReducerType } from "src/redux/RootReducer";
+import {PageInfoDispatch} from 'src/old/redux/reducers/PageInfo'
+import { RootReducerType } from "src/old/redux/RootReducer";
 
 interface PropType{
     view : Function

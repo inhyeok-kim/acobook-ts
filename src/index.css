@@ -23,33 +23,6 @@ body {
   height: 100%;
 }
 
-
-i.plus{
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-i.plus::before{
-  content: '';
-  position: absolute;
-  width: 70%;
-  background: white;
-  height: 10%;
-  left: 15%;
-  top: 45%;
-}
-i.plus::after{
-  content: '';
-  height: 70%;
-  width: 10%;
-  background: white;
-  position: absolute;
-  top: 15%;
-  left: 45%;
-}
-
-div[contenteditable=true]:empty:before{
-  content: attr(placeholder);
-  display: block;
-  color: gray;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

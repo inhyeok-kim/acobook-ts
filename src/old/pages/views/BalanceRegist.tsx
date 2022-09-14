@@ -1,13 +1,13 @@
 import { useMemo, useRef, useState } from "react";
-import ButtonCollection from "src/components/ButtonCollection";
-import { colorCommonDarkBlue } from "src/style/CommonColor";
-import { cssPageHeader } from "src/style/CommonStyles";
+import ButtonCollection from "src/old/components/ButtonCollection";
+import { colorCommonDarkBlue } from "src/old/style/CommonColor";
+import { cssPageHeader } from "src/old/style/CommonStyles";
 import styled from "styled-components"
 import {useDispatch} from 'react-redux'
-import SelectButtons from "src/components/SelectButtons";
-import InputCurrency from "src/components/InputCurrency";
+import SelectButtons from "src/old/components/SelectButtons";
+import InputCurrency from "src/old/components/InputCurrency";
 import { registBalance } from "src/service/BalanceService";
-import { ReloadDispatch } from "src/redux/reducers/Reload";
+import { ReloadDispatch } from "src/old/redux/reducers/Reload";
 
 interface PropType{
     action : actionType

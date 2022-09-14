@@ -1,19 +1,19 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import ButtonCollection from "src/components/ButtonCollection";
-import { colorCommonDarkBlue } from "src/style/CommonColor";
-import { cssPageHeader } from "src/style/CommonStyles";
+import ButtonCollection from "src/old/components/ButtonCollection";
+import { colorCommonDarkBlue } from "src/old/style/CommonColor";
+import { cssPageHeader } from "src/old/style/CommonStyles";
 import styled from "styled-components"
 import {useDispatch, useSelector} from 'react-redux'
 import {ButtonOnOff} from 'inhyeok.kim-module.ui/dist/Buttons'
 import {formatStringToDate} from 'src/utils/FormatUtil';
-import InputCurrency from "src/components/InputCurrency";
-import { PageInfoDispatch } from "src/redux/reducers/PageInfo";
-import BalanceSelect from "src/pages/views/BalanceSelect";
-import { RootReducerType } from "src/redux/RootReducer";
+import InputCurrency from "src/old/components/InputCurrency";
+import { PageInfoDispatch } from "src/old/redux/reducers/PageInfo";
+import BalanceSelect from "src/old/pages/views/BalanceSelect";
+import { RootReducerType } from "src/old/redux/RootReducer";
 import { registHistory } from "src/service/HistoryService";
-import { DatabusDispatch } from "src/redux/reducers/Databus";
-import { ReloadDispatch } from "src/redux/reducers/Reload";
-import SelectButtons from "src/components/SelectButtons";
+import { DatabusDispatch } from "src/old/redux/reducers/Databus";
+import { ReloadDispatch } from "src/old/redux/reducers/Reload";
+import SelectButtons from "src/old/components/SelectButtons";
 
 interface PropType{
     action : actionType

@@ -1,29 +1,69 @@
 import styled from 'styled-components';
-import {cssPageHeader} from 'src/style/CommonStyles';
-import {colorCommonDarkBlue as ccdb, colorCommonGradient as ccg} from 'src/style/CommonColor';
+import {cssPageHeader} from 'src/old/style/CommonStyles';
+import {colorCommonDarkBlue as ccdb, colorCommonGradient as ccg} from 'src/old/style/CommonColor';
 import { useEffect, useMemo, useState } from 'react';
 import {formatCurrency} from 'src/utils/FormatUtil'
 
-import ButtonCollection from 'src/components/ButtonCollection';
-import Navigation from 'src/components/Navigation';
-import BalanceList from 'src/components/BalanceList';
+import ButtonCollection from 'src/old/components/ButtonCollection';
+import BalanceList from 'src/old/components/BalanceList';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootReducerType } from 'src/redux/RootReducer';
-import { PageInfoDispatch } from 'src/redux/reducers/PageInfo';
-import BalanceRegist from './views/BalanceRegist';
+import { RootReducerType } from 'src/old/redux/RootReducer';
+import { PageInfoDispatch } from 'src/old/redux/reducers/PageInfo';
+import BalanceRegist from 'src/old/pages/views/BalanceRegist';
+import { DatabusDispatch } from 'src/old/redux/reducers/Databus';
 import { getBalanceList } from 'src/service/BalanceService';
 
-export default function Balance({}){
+interface PropType{
+    action : actionType
+}
+
+interface actionType {
+    close : Function
+}
+
+export default function BalanceSelect({action} : PropType){
     const dispatch = useDispatch();
     function addView(view : Function){
         dispatch(PageInfoDispatch.addView(view));
     }
+
     const [update,setUpdate] = useState(false);
+
+    function loadBalanceData(){
+        getBalanceList()
+        .then((result)=>{
+            setBalanceList(result as Array<BalanceType>);
+        });
+    }
+    
+    const reload = useSelector((state : RootReducerType)=> state.Reload);
+    
+    const [balanceList,setBalanceList] = useState<Array<BalanceType>>([]);
+    useEffect(()=>{
+        loadBalanceData();
+    },[reload]);
+    
+    const accountList = useMemo(()=>{
+        return balanceList.filter((account)=>{
+            return account.type === 'account';
+        })
+    },[balanceList]);
+
+    const cardList = useMemo(()=>{
+        return balanceList.filter((account)=>{
+            return account.type === 'credit_card';
+        })
+    },[balanceList]);
+
     const HeaderBtns = useMemo(()=>[
         {
-            dom : <span style={{visibility : update ? 'visible' : 'hidden'}}>추가</span>,
+            dom : update ? <span>추가</span> : <span>취소</span>,
             action : function(){
-                addView(BalanceRegist);
+                if(update){
+                    addView(BalanceRegist);
+                } else {
+                    action.close();
+                }
             },
             style : {
                 background : 'none',
@@ -33,7 +73,7 @@ export default function Balance({}){
             }
         },
         {
-            dom : <h2>잔액</h2>,
+            dom : <h2>계정선택</h2>,
             action : function(){
             },
             style : {
@@ -57,44 +97,10 @@ export default function Balance({}){
         }
     ],[update]);
 
-    function loadBalanceData(){
-        getBalanceList()
-        .then((result)=>{
-            setBalanceList(result as Array<BalanceType>);
-        });
+    function selectAccount(account:Object){
+        dispatch(DatabusDispatch.SET_DATA(account));
+        action.close();
     }
-    const reload = useSelector((state : RootReducerType)=> state.Reload);
-
-    const [balanceList,setBalanceList] = useState<Array<BalanceType>>([]);
-    useEffect(()=>{
-        loadBalanceData();
-    },[reload]);
-
-    const accountList = useMemo(()=>{
-        return balanceList.filter((account)=>{
-            return account.type === 'account';
-        })
-    },[balanceList]);
-
-    const cardList = useMemo(()=>{
-        return balanceList.filter((account)=>{
-            return account.type === 'credit_card';
-        })
-    },[balanceList]);
-
-    const debtList = useMemo(()=>{
-        return balanceList.filter((account)=>{
-            return account.type === 'debt';
-        })
-    },[balanceList]);
-
-    const assetList = useMemo(()=>{
-        return balanceList.filter((account)=>{
-            return account.type === 'asset';
-        })
-    },[balanceList]);
-
-
     return (
         <>
             <Header>
@@ -114,7 +120,7 @@ export default function Balance({}){
                             <span>지불계정</span>
                             <span>&#8361;{formatCurrency(sumTotal(accountList))}</span>
                         </TitleWrapper>
-                        <BalanceList list={accountList} modify={update} />
+                        <BalanceList onClick={selectAccount} list={accountList} modify={update} />
                     </div>
                     :
                     ''
@@ -125,35 +131,11 @@ export default function Balance({}){
                             <span>신용카드</span>
                             <span>&#8361;{formatCurrency(sumTotal(cardList))}</span>
                         </TitleWrapper>
-                        <BalanceList list={cardList} modify={update} type='debt' />
-                    </div>
-                    :''
-                }
-                {assetList.length > 0 ? 
-                    <div>
-                        <TitleWrapper>
-                            <span>자산</span>
-                            <span>&#8361;{formatCurrency(sumTotal(assetList))}</span>
-                        </TitleWrapper>
-                        <BalanceList list={assetList} modify={update} />
-                    </div>
-                    :
-                    ''
-                }
-                {debtList.length > 0 ?
-                    <div>
-                        <TitleWrapper>
-                            <span>부채</span>
-                            <span>&#8361;{formatCurrency(sumTotal(debtList))}</span>
-                        </TitleWrapper>
-                        <BalanceList list={debtList} modify={update} type='debt' />
+                        <BalanceList onClick={selectAccount} list={cardList} modify={update} type='debt' />
                     </div>
                     :''
                 }
             </Body>
-            <Footer>
-                <Navigation/>
-            </Footer>
         </>
     )
 }
@@ -192,7 +174,7 @@ const HeaderButtons = styled.div`
 
 const Body = styled.div`
     width: 100%;
-    height: 84%;
+    height: 94%;
     background : white;
     overflow-x: hidden;
     overflow-y: scroll;

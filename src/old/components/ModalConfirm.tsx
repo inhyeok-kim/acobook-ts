@@ -1,7 +1,7 @@
 import { ReactElement} from "react";
 import styled from "styled-components";
-import Modal from 'src/components/Modal';
-import { colorCommonDarkBlue } from "src/style/CommonColor";
+import Modal from 'src/old/components/Modal';
+import { colorCommonDarkBlue } from "src/old/style/CommonColor";
 
 interface confirmType {
     alertText : ReactElement | string

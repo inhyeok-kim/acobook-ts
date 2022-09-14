@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootReducerType } from "src/redux/RootReducer";
+import { RootReducerType } from "src/old/redux/RootReducer";
 import { getHistoryByDate } from "src/service/HistoryService";
 import HistoryList from "./HistoryList";
 

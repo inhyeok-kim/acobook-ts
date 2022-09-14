@@ -1,5 +1,5 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
-import { colorCommonDarkBlue } from "src/style/CommonColor";
+import { colorCommonDarkBlue } from "src/old/style/CommonColor";
 import styled from "styled-components";
 
 interface propType {

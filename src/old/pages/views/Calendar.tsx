@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import ButtonCollection from "src/components/ButtonCollection";
-import CalendarList from "src/components/CalendarList";
-import CalendarTable from "src/components/CalendarTable";
-import { DatabusDispatch } from "src/redux/reducers/Databus";
-import { PageInfoDispatch } from "src/redux/reducers/PageInfo";
-import { colorCommonDarkBlue } from "src/style/CommonColor";
-import { cssPageHeader } from "src/style/CommonStyles";
+import ButtonCollection from "src/old/components/ButtonCollection";
+import CalendarList from "src/old/components/CalendarList";
+import CalendarTable from "src/old/components/CalendarTable";
+import { DatabusDispatch } from "src/old/redux/reducers/Databus";
+import { PageInfoDispatch } from "src/old/redux/reducers/PageInfo";
+import { colorCommonDarkBlue } from "src/old/style/CommonColor";
+import { cssPageHeader } from "src/old/style/CommonStyles";
 import styled from "styled-components";
 import Regist from "./Regist";
 

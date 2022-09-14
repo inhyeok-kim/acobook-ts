@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import Collection from 'src/components/Collection'
+import Collection from 'src/old/components/Collection'
 
 interface Props {
     option : {

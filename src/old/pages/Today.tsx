@@ -1,16 +1,16 @@
 import styled from 'styled-components';
-import {cssPageHeader} from 'src/style/CommonStyles';
-import {colorCommonDarkBlue as ccdb} from 'src/style/CommonColor';
-import {H5} from 'src/style/CommonTag'
+import {cssPageHeader} from 'src/old/style/CommonStyles';
+import {colorCommonDarkBlue as ccdb} from 'src/old/style/CommonColor';
+import {H5} from 'src/old/style/CommonTag'
 import { formatCurrency, formatStringToDate } from 'src/utils/FormatUtil';
 import { useEffect, useMemo, useState } from 'react';
 
-import Navigation from 'src/components/Navigation';
-import HistoryList from 'src/components/HistoryList';
+import Navigation from 'src/old/components/Navigation';
+import HistoryList from 'src/old/components/HistoryList';
 import { getTodayHistory } from 'src/service/HistoryService';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootReducerType } from 'src/redux/RootReducer';
-import { PageInfoDispatch } from 'src/redux/reducers/PageInfo';
+import { RootReducerType } from 'src/old/redux/RootReducer';
+import { PageInfoDispatch } from 'src/old/redux/reducers/PageInfo';
 import Calendar from './views/Calendar';
 
 export default function Today(){

@@ -1,7 +1,7 @@
-import Today from "src/pages/Today";
-import Balance from 'src/pages/Balance';
-import Category from "src/pages/Category";
-import Regist from 'src/pages/views/Regist';
+import Today from "src/old/pages/Today";
+import Balance from 'src/old/pages/Balance';
+import Category from "src/old/pages/Category";
+import Regist from 'src/old/pages/views/Regist';
 
 export interface PageInfoType {
     page : Function,

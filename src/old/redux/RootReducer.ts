@@ -1,5 +1,5 @@
 import { combineReducers} from 'redux';
-import {PageInfo,PageInfoType} from 'src/redux/reducers/PageInfo';
+import {PageInfo,PageInfoType} from 'src/old/redux/reducers/PageInfo';
 import { HistoryData } from './reducers/HistoryData';
 import { BalanceData } from './reducers/BalanceData';
 import { Databus } from './reducers/Databus';

@@ -1,5 +1,5 @@
 import {css} from "styled-components";
-import {colorCommonDarkBlue} from 'src/style/CommonColor';
+import {colorCommonDarkBlue} from 'src/old/style/CommonColor';
 
 export const cssPageHeader = css`
     width : 100%;

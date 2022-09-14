@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import {cssCommonLi, cssCommonUl}from 'src/style/CommonStyles'
-import {colorCommonRed as ccr, colorCommonGreen as ccg, colorCommonDarkBlue as ccdb}from 'src/style/CommonColor'
+import {cssCommonLi, cssCommonUl}from 'src/old/style/CommonStyles'
+import {colorCommonRed as ccr, colorCommonGreen as ccg, colorCommonDarkBlue as ccdb}from 'src/old/style/CommonColor'
 
 import {formatCurrency, formatStringToDate} from 'src/utils/FormatUtil';
 

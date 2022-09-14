@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
-import ButtonCollection from "src/components/ButtonCollection";
-import Navigation from "src/components/Navigation";
-import { colorCommonDarkBlue, colorCommonRed } from "src/style/CommonColor";
-import { cssPageHeader } from "src/style/CommonStyles";
+import ButtonCollection from "src/old/components/ButtonCollection";
+import Navigation from "src/old/components/Navigation";
+import { colorCommonDarkBlue, colorCommonRed } from "src/old/style/CommonColor";
+import { cssPageHeader } from "src/old/style/CommonStyles";
 import styled from "styled-components"
 
 export default function Category(){

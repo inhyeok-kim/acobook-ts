@@ -1,13 +1,13 @@
 import styled from "styled-components";
-import {cssCommonLi, cssCommonUl}from 'src/style/CommonStyles'
-import {colorCommonGreen as green, colorCommonRed as red} from 'src/style/CommonColor'
+import {cssCommonLi, cssCommonUl}from 'src/old/style/CommonStyles'
+import {colorCommonGreen as green, colorCommonRed as red} from 'src/old/style/CommonColor'
 import { formatCurrency } from "src/utils/FormatUtil";
 import ModalConfirm from "./ModalConfirm";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { BalanceDataDispatch } from "src/redux/reducers/BalanceData";
+import { BalanceDataDispatch } from "src/old/redux/reducers/BalanceData";
 import { removeBalance } from "src/service/BalanceService";
-import { ReloadDispatch } from "src/redux/reducers/Reload";
+import { ReloadDispatch } from "src/old/redux/reducers/Reload";
 
 
 interface propType {
