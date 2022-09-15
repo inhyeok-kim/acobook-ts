@@ -3,41 +3,41 @@ import { insertHistoryList, selectHistoryList } from "src/dao/HistoryDao";
 import { KeyRange } from "src/utils/IDBUtil";
 
 export async function registHistory(newHis : HistoryType){
-    const balance = await selectBalanceById(newHis.balanceId) as BalanceType;
-    if(newHis.type === 'expense'){
-        if(balance.type === 'account'){
-            balance.amount -= newHis.amount;
-        } else {
-            balance.amount += newHis.amount;
-        }
-    } else if(newHis.type === 'income'){
-        if(balance.type === 'account'){
-            balance.amount += newHis.amount;
-        } else {
-            balance.amount -= newHis.amount;
-        }
-    } else {
-        if(newHis.transferId){
-            const transfer = await selectBalanceById(newHis.transferId) as BalanceType;
-            if(balance.type === 'account'){
-                balance.amount -= newHis.amount;
-            } else {
-                balance.amount += newHis.amount;
-            }
+    // const balance = await selectBalanceById(newHis.balanceId) as BalanceType;
+    // if(newHis.type === 'expense'){
+    //     if(balance.type === 'account'){
+    //         balance.amount -= newHis.amount;
+    //     } else {
+    //         balance.amount += newHis.amount;
+    //     }
+    // } else if(newHis.type === 'income'){
+    //     if(balance.type === 'account'){
+    //         balance.amount += newHis.amount;
+    //     } else {
+    //         balance.amount -= newHis.amount;
+    //     }
+    // } else {
+    //     if(newHis.transferId){
+    //         const transfer = await selectBalanceById(newHis.transferId) as BalanceType;
+    //         if(balance.type === 'account'){
+    //             balance.amount -= newHis.amount;
+    //         } else {
+    //             balance.amount += newHis.amount;
+    //         }
 
-            if(transfer.type === 'account'){
-                transfer.amount += newHis.amount;
-            } else {
-                transfer.amount -= newHis.amount;
-            }
-            updateBalance(transfer);
-        }
-    }
-    updateBalance(balance);
+    //         if(transfer.type === 'account'){
+    //             transfer.amount += newHis.amount;
+    //         } else {
+    //             transfer.amount -= newHis.amount;
+    //         }
+    //         updateBalance(transfer);
+    //     }
+    // }
+    // updateBalance(balance);
 
-    const result = await insertHistoryList(newHis);
+    // const result = await insertHistoryList(newHis);
 
-    return result
+    // return result
 }
 
 export async function getTodayHistory(){

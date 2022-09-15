@@ -78,7 +78,7 @@ export default function Balance({}){
 
     const cardList = useMemo(()=>{
         return balanceList.filter((account)=>{
-            return account.type === 'credit_card';
+            return account.type === 'card';
         })
     },[balanceList]);
 
@@ -159,7 +159,8 @@ export default function Balance({}){
 }
 
 function sumTotal(list : Array<BalanceType>){
-    return list.reduce((p:number,c:BalanceType)=>p + c.amount,0);
+    // return list.reduce((p:number,c:BalanceType)=>p + c.amount,0);
+    return 0;
 }
 
 // 스타일

@@ -73,17 +73,17 @@ export default function BalanceList({
 
     return (
         <ListWrapper>
-            {list.map((v,i)=>{
-                return (
-                    <List key={i} onClick={onClick? ()=>{onClick({nm : v.balanceNm, id:v.balanceId})}: ()=>{}} >
-                        <div className="list_div">
-                            <span>{v.balanceNm}</span>
-                            <Span as={type === 'asset' ? Asset : Debt}>&#8361; {formatCurrency(v.amount)}</Span>
-                        </div>
-                        <Button modify={modify} onClick={()=>{onClickDelete(v.balanceNm, v.balanceId!)}}>삭제</Button>
-                    </List>
-                )
-            })}
+            {/* {list.map((v,i)=>{
+                // return (
+                //     // <List key={i} onClick={onClick? ()=>{onClick({nm : v.balanceNm, id:v.balanceId})}: ()=>{}} >
+                //     //     <div className="list_div">
+                //     //         <span>{v.balanceNm}</span>
+                //     //         <Span as={type === 'asset' ? Asset : Debt}>&#8361; {formatCurrency(v.amount)}</Span>
+                //     //     </div>
+                //     //     <Button modify={modify} onClick={()=>{onClickDelete(v.balanceNm, v.balanceId!)}}>삭제</Button>
+                //     // </List>
+                // )
+            })} */}
             <ModalConfirm isShow={modalShow} option={modalOption} requestClose={()=>{setModalShow(false)}}/>
 
         </ListWrapper>

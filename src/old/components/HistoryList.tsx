@@ -15,7 +15,7 @@ export default function HistoryList( {
 } : propsType){
     return (
         <ListWrapper>
-            {list.map((v,i)=>{
+            {/* {list.map((v,i)=>{
                 return (
                     <List key={i}>
                         <div>
@@ -31,7 +31,7 @@ export default function HistoryList( {
                         </div>
                     </List>
                 )
-            })}
+            })} */}
         </ListWrapper>
     )
 }

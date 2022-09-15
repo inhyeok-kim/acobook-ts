@@ -54,11 +54,11 @@ export default function Today(){
 function sumAmount(list : Array<HistoryType>){
     let result = 0;
     list.forEach(v=>{
-        if(v.type === 'income'){
-            result += v.amount;
-        } else if(v.type === 'expense'){
-            result -= v.amount;
-        }
+        // if(v.type === 'income'){
+        //     result += v.amount;
+        // } else if(v.type === 'expense'){
+        //     result -= v.amount;
+        // }
     })
     return result;
     

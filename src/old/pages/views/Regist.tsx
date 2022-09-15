@@ -141,22 +141,22 @@ export default function Regist({action} : PropType){
     const [transferNm, setTransferNm] = useState('계좌선택');
 
     function regist(){
-        let newHistory : HistoryType;
-        newHistory = {
-            balanceId : account,
-            categoryNm : category,
-            amount : parseInt(ammount.replaceAll(',','').replaceAll('₩','')),
-            date : new Date(`${regDate.replaceAll('-','/')} ${regTime}`),
-            type : type as "expense" | "income" | "transfer",
-            transferId : transferId,
-        }
-        if(type==='transfer'){
-            newHistory.categoryNm = `${accountNm} -> ${transferNm}`;
-        }
-        registHistory(newHistory).then(()=>{
-            dispatch(ReloadDispatch.RELOAD());
-            action.close();
-        });
+        // let newHistory : HistoryType;
+        // newHistory = {
+        //     balanceId : account,
+        //     categoryNm : category,
+        //     amount : parseInt(ammount.replaceAll(',','').replaceAll('₩','')),
+        //     date : new Date(`${regDate.replaceAll('-','/')} ${regTime}`),
+        //     type : type as "expense" | "income" | "transfer",
+        //     transferId : transferId,
+        // }
+        // if(type==='transfer'){
+        //     newHistory.categoryNm = `${accountNm} -> ${transferNm}`;
+        // }
+        // registHistory(newHistory).then(()=>{
+        //     dispatch(ReloadDispatch.RELOAD());
+        //     action.close();
+        // });
     }
 
     function addView(view : Function){

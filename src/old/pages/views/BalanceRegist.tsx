@@ -66,16 +66,16 @@ export default function BalanceRegist({action} : PropType){
     const [ammount, setAmmount] = useState('0');
 
     function regist(){
-        let newBalance : BalanceType;
-        newBalance = {
-            balanceNm : balanceNm,
-            amount : parseInt(ammount.replaceAll(',','').replaceAll('₩','')),
-            type : type
-        }
-        registBalance(newBalance).then(()=>{
-            dispatch(ReloadDispatch.RELOAD());
-            action.close();
-        });
+        // let newBalance : BalanceType;
+        // newBalance = {
+        //     // balanceNm : balanceNm,
+        //     amount : parseInt(ammount.replaceAll(',','').replaceAll('₩','')),
+        //     // type : type
+        // }
+        // registBalance(newBalance).then(()=>{
+        //     dispatch(ReloadDispatch.RELOAD());
+        //     action.close();
+        // });
     }
 
     const typeOptions = useMemo(()=>([
