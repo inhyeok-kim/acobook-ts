@@ -6,10 +6,10 @@ import TodayIcon from '@mui/icons-material/Today';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
 
-import Today from './pages/today';
-import Category from './pages/category';
-import Balance from './pages/balance';
-import Statistics from './pages/statistics';
+import Today from '../../views/pages/today';
+import Category from '../../views/pages/category';
+import Balance from '../../views/pages/balance';
+import Statistics from '../../views/pages/statistics';
 
 interface propType {
     setViewPage : Function

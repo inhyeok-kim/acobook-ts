@@ -29,18 +29,19 @@ export default function SlideAlertDialog({
             <Dialog
                 open={isOpen}
                 TransitionComponent={Transition}
+                sx={{'& .MuiPaper-root':{width:'100%'}}}
                 keepMounted
                 // onClose={handleClose}
                 aria-describedby="alert-dialog-slide-description"
                 >
                 <DialogTitle>{title}</DialogTitle>
                 <DialogContent>
-                <DialogContentText id="alert-dialog-slide-description">
-                    {content}
-                </DialogContentText>
+                    <DialogContentText id="alert-dialog-slide-description">
+                        {content}
+                    </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                <Button onClick={()=>{onClose()}}>OK</Button>
+                    <Button onClick={()=>{onClose()}}>OK</Button>
                 </DialogActions>
             </Dialog>
         </div>

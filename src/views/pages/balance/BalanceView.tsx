@@ -1,7 +1,7 @@
-import { Grid, IconButton, Stack } from "@mui/material";
+import { Grid } from "@mui/material";
 import BalanceList from "./comp/BalanceList";
 import BalanceHeader from "./comp/BalanceHeader";
-import IconButtonStack, { IconButtonType } from "src/components/IconButtonStack";
+import IconButtonStack from "src/components/common/IconButtonStack";
 import EditIcon from '@mui/icons-material/Edit';
 import { useMemo, useState } from "react";
 import Regist from "src/views/overs/balance/Regist";

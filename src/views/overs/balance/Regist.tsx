@@ -1,6 +1,6 @@
 import { useState } from "react";
-import FullscreenDialog from "src/components/FullscreenDialog";
-import SlideAlertDialog from "src/components/SlideAlertDialog";
+import FullscreenDialog from "src/components/common/FullscreenDialog";
+import SlideAlertDialog from "src/components/common/SlideAlertDialog";
 import RegistView from "./RegistView";
 
 interface propType {
@@ -19,6 +19,7 @@ export default function Regist({
     function regist(newBalance : BalanceType){
         console.log(newBalance);
         if(!newBalance.name){
+            setAlertTitle('알림');
             setAlertCont('이름은 필수입니다.')
             setAlertOpen(true);
         } else {

@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material';
 import { useState } from 'react';
-import MainDial from './components/MainDial';
-import Navigation from './views/Navigation';
+import MainDial from './components/app/MainDial';
+import Navigation from './components/app/Navigation';
 
 function App() {
   const [viewPage, setViewPage] = useState();
