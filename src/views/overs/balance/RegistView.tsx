@@ -6,10 +6,11 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { Avatar, FormControl, Grid, ListItemAvatar, MenuItem, Select, SelectChangeEvent, Switch, TextField } from '@mui/material';
+import { Avatar, FormControl, Grid, Input, ListItemAvatar, ListItemText, MenuItem, Select, SelectChangeEvent, Switch, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import ImageIcon from '@mui/icons-material/Image';
 import SaveAsOutlinedIcon from '@mui/icons-material/SaveAsOutlined';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 interface propType {
     closeHandler : Function
@@ -133,16 +134,81 @@ export default function RegistView({
                     <TextField label="이름" variant='outlined' fullWidth size='small' value={name} onChange={(e)=>{setName(e.target.value)}}/>
                 </ListItem>
                 <Divider />
-                <ListItem dense sx={{color:'rgba(0, 0, 0, 0.6)',alignItems:'end'}}>
-                    <TextField label="잔액" variant='standard' sx={{'& input':{textAlign:'right'},paddingRight:'10px'}} 
-                        fullWidth size='small' inputProps={{ inputMode: 'numeric', pattern: '[0-9]*'}}
-                        value={amount.toLocaleString()}
-                        onChange={amountHandler}
-                    />원
-                </ListItem>
+                
+                {
+                    type === 'account' || type === 'asset' || type === 'debt' ?
+                    <>
+                        <ListItem dense sx={{color:'rgba(0, 0, 0, 0.6)',alignItems:'end'}}>
+                            <ListItemText primary={'하위 항목'} />
+                        </ListItem>
+                        <ListItem dense sx={{color:'rgba(0, 0, 0, 0.6)',paddingTop:'0px',alignItems:'end'}}>
+                            <List sx={{padding : '0px'}}>
+                                <ListItem dense>
+                                    <Grid xs={5}>
+                                        <ListItemText primary={'기본'} />
+                                    </Grid>
+                                    <Grid xs={7}>
+                                        <Grid container wrap='nowrap'>
+                                            <TextField label="" variant='standard' sx={{'& input':{textAlign:'right',},paddingRight:'10px','& ::before' : {'borderBottom':'none'},'& ::after' : {'borderBottom':'none'}}} 
+                                                fullWidth size='small' inputProps={{  inputMode: 'numeric', pattern: '[0-9]*'}}
+                                                value={amount.toLocaleString()}
+                                                onChange={amountHandler}
+                                            />원
+                                        </Grid>
+                                    </Grid>
+                                </ListItem>
+                                <Divider />
+
+                                <ListItem dense sx={{color:'rgba(0, 0, 0, 0.6)',alignItems:'end'}}>
+                                    <Grid xs={5}>
+                                        <TextField label="" variant='standard' sx={{'& input':{textAlign:'left',fontSize:'small'}}} 
+                                            fullWidth 
+                                            size='small'
+                                        />
+                                    </Grid>
+                                    <Grid xs={7}>
+                                        <Grid container wrap='nowrap'>
+                                            <TextField label="" variant='standard' sx={{'& input':{textAlign:'right',},paddingRight:'10px','& ::before' : {'borderBottom':'none'},'& ::after' : {'borderBottom':'none'}}} 
+                                                fullWidth size='small' inputProps={{  inputMode: 'numeric', pattern: '[0-9]*'}}
+                                                value={amount.toLocaleString()}
+                                                onChange={amountHandler}
+                                            />원
+                                        </Grid>
+                                    </Grid>
+                                </ListItem>
+                                <Divider />
+
+                                <ListItem dense sx={{justifyContent:'end'}} >
+                                    <IconButton size="small">
+                                        <AddCircleOutlineIcon />
+                                    </IconButton>
+                                </ListItem>
+                                <Divider />
+                            </List>
+                        </ListItem>
+                        
+
+                        <ListItem dense sx={{color:'rgba(0, 0, 0, 0.6)',alignItems:'end'}}>
+                            <ListItemText primary={'총액'} />
+                            <ListItemText primary={amount.toLocaleString()+' 원'} primaryTypographyProps={{textAlign : 'right'}} />
+                        </ListItem>
+                        <Divider />
+                    </>
+                    :
+                    ''
+                }
+                
                 {
                     type === 'card' ?
                         <>
+                            <ListItem dense sx={{color:'rgba(0, 0, 0, 0.6)',alignItems:'end'}}>
+                            <TextField label="잔액" variant='standard' sx={{'& input':{textAlign:'right'},paddingRight:'10px'}} 
+                                    fullWidth size='small' inputProps={{ inputMode: 'numeric', pattern: '[0-9]*'}}
+                                    value={amount.toLocaleString()}
+                                    onChange={amountHandler}
+                                />원
+                            </ListItem>
+                            <Divider />
                             <ListItem dense sx={{color:'rgba(0, 0, 0, 0.6)',alignItems:'end'}}>
                                 <TextField label="한도" variant='standard' sx={{'& input':{textAlign:'right'},paddingRight:'10px'}} 
                                     fullWidth size='small' inputProps={{ inputMode: 'numeric', pattern: '[0-9]*'}}
